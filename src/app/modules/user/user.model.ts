@@ -25,7 +25,7 @@ const userSchema = new Schema<IUser, UserModel>(
           },
           password: {
                type: String,
-               required: function() {
+               required: function () {
                     // Password is only required for non-OAuth users
                     return !this.oauthProvider;
                },
@@ -91,8 +91,6 @@ const userSchema = new Schema<IUser, UserModel>(
 userSchema.statics.isExistUserById = async (id: string) => {
      return await User.findById(id);
 };
-
-// db.users.updateOne({email:"tihow91361@linxues.com"},{email:"rakibhassan305@gmail.com"})
 
 userSchema.statics.isExistUserByEmail = async (email: string) => {
      return await User.findOne({ email });

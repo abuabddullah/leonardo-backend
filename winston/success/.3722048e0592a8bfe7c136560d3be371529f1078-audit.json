@@ -1,0 +1,15 @@
+{
+    "keep": {
+        "days": true,
+        "amount": 1
+    },
+    "auditLog": "D:\\webLife\\office sta\\leonardo-backend\\winston\\success\\.3722048e0592a8bfe7c136560d3be371529f1078-audit.json",
+    "files": [
+        {
+            "date": 1767876467698,
+            "name": "D:\\webLife\\office sta\\leonardo-backend\\winston\\success\\08-01-2026-18-success.log",
+            "hash": "2da4144c1476ab82218df486ead007c963057318eda3203dfca0f4cf0a847530"
+        }
+    ],
+    "hashType": "sha256"
+}
