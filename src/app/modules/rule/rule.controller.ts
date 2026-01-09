@@ -168,17 +168,17 @@ const getDefaultVat = catchAsync(async (req: Request, res: Response) => {
      });
 });
 
-const createSocialMedia = catchAsync(async (req: Request, res: Response) => {
-     const { ...socialMediaData } = req.body;
-     const result = await RuleService.createSocialMediaToDB(socialMediaData);
+// const createSocialMedia = catchAsync(async (req: Request, res: Response) => {
+//      const { ...socialMediaData } = req.body;
+//      const result = await RuleService.createSocialMediaToDB(socialMediaData);
 
-     sendResponse(res, {
-          success: true,
-          statusCode: StatusCodes.OK,
-          message: 'Social media link created successfully',
-          data: result,
-     });
-});
+//      sendResponse(res, {
+//           success: true,
+//           statusCode: StatusCodes.OK,
+//           message: 'Social media link created successfully',
+//           data: result,
+//      });
+// });
 
 const getSocialMedia = catchAsync(async (req: Request, res: Response) => {
      const result = await RuleService.getSocialMediaFromDB();
@@ -278,7 +278,7 @@ export const RuleController = {
      getDefaultVat,
      createAllowedInvoicesCountForFreeUsers,
      getAllowedInvoicesCountForFreeUsers,
-     createSocialMedia,
+     // createSocialMedia,
      getSocialMedia,
      togglePermission,
      getPermission,

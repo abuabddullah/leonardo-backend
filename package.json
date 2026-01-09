@@ -10,6 +10,7 @@
           "lint:fix": "eslint src/**/*.ts --fix",
           "format": "prettier . --write",
           "seed": "ts-node src/seed/seedAdmin.ts",
+          "seed:rule": "ts-node src/seed/seedRule.ts",
           "build": "tsc",
           "start": "node dist/server.ts"
      },

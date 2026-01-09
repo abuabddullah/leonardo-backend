@@ -22,19 +22,20 @@ export enum EContentType {
 }
 
 export type IRule = {
-     content: string;
+     content:
+          | string
+          | {
+                 facebook: string;
+                 twitter: string;
+                 instagram: string;
+                 linkedin: string;
+                 whatsapp: string;
+            };
      type: EContentType;
      permission: boolean;
      permissionType: EPermissionType;
      value: number;
      valuesTypes: EValuesTypes;
-     socialMedia?: {
-          facebook: string;
-          twitter: string;
-          instagram: string;
-          linkedin: string;
-          whatsapp: string;
-     };
 };
 
 export type RuleModel = Model<IRule, Record<string, unknown>>;

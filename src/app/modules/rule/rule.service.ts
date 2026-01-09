@@ -159,26 +159,26 @@ const getDefaultVatFromDB = async () => {
      return result;
 };
 
-const createSocialMediaToDB = async (payload: IRule) => {
-     // Use .lean() to get a plain object instead of a Mongoose document
-     const isExistSocialMedia = await Rule.findOne({ type: 'socialMedia' }).select('+socialMedia').lean(); // This will return plain JavaScript object
+// const createSocialMediaToDB = async (payload: IRule) => {
+//      // Use .lean() to get a plain object instead of a Mongoose document
+//      const isExistSocialMedia = await Rule.findOne({ type: 'socialMedia' }).select('+socialMedia').lean(); // This will return plain JavaScript object
 
-     if (isExistSocialMedia) {
-          // Merge the payload with the existing socialMedia object
-          const socialMediaDTO = { ...isExistSocialMedia.socialMedia, ...payload };
+//      if (isExistSocialMedia) {
+//           // Merge the payload with the existing socialMedia object
+//           const socialMediaDTO = { ...isExistSocialMedia.socialMedia, ...payload };
 
-          // Update the document
-          const result = await Rule.findOneAndUpdate({ type: 'socialMedia' }, { socialMedia: socialMediaDTO }, { new: true });
+//           // Update the document
+//           const result = await Rule.findOneAndUpdate({ type: 'socialMedia' }, { socialMedia: socialMediaDTO }, { new: true });
 
-          const message = 'Social Media Updated successfully';
-          return { message, result };
-     } else {
-          // If no document exists, create a new one
-          const result = await Rule.create({ ...payload, type: 'socialMedia' });
-          const message = 'Social Media Created successfully';
-          return { message, result };
-     }
-};
+//           const message = 'Social Media Updated successfully';
+//           return { message, result };
+//      } else {
+//           // If no document exists, create a new one
+//           const result = await Rule.create({ ...payload, type: 'socialMedia' });
+//           const message = 'Social Media Created successfully';
+//           return { message, result };
+//      }
+// };
 
 const getSocialMediaFromDB = async () => {
      const result = await Rule.findOne({ type: 'socialMedia' }).select('+socialMedia');
@@ -263,7 +263,7 @@ export const RuleService = {
      createDefaultVatToDB,
      getDefaultVatFromDB,
      getSocialMediaFromDB,
-     createSocialMediaToDB,
+     // createSocialMediaToDB,
      togglePermissionToDB,
      getPermissionFromDB,
      upsertContentToDB,

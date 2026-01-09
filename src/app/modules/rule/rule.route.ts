@@ -46,7 +46,7 @@ router
 
 router
      .route('/social-media')
-     .post(validateRequest(RuleValidation.socialMediaZodSchema), auth(USER_ROLES.ADMIN, USER_ROLES.SUPER_ADMIN), RuleController.createSocialMedia)
+     // .post(validateRequest(RuleValidation.socialMediaZodSchema), auth(USER_ROLES.ADMIN, USER_ROLES.SUPER_ADMIN), RuleController.createSocialMedia)
      .get(validateRequest(RuleValidation.socialMediaZodSchema), RuleController.getSocialMedia);
 
 export const RuleRoute = router;

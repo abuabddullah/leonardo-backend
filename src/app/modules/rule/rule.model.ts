@@ -3,11 +3,12 @@ import { EContentType, EPermissionType, EValuesTypes, IRule, RuleModel } from '.
 
 const ruleSchema = new Schema<IRule, RuleModel>({
      content: {
-          type: String,
+          type: Schema.Types.Mixed,
           required: function (this: IRule) {
-               return [...Object.values(EContentType)].includes(this.type);
+               return Object.values(EContentType).includes(this.type);
           },
      },
+
      type: {
           type: String,
           enum: [...Object.values(EContentType)],
@@ -32,16 +33,6 @@ const ruleSchema = new Schema<IRule, RuleModel>({
           type: String,
           enum: [...Object.values(EValuesTypes)],
           select: 0,
-     },
-     socialMedia: {
-          type: {
-               facebook: String,
-               twitter: String,
-               instagram: String,
-               linkedin: String,
-               whatsapp: String,
-          },
-          select: false,
      },
 });
 
