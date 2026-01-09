@@ -3,19 +3,7 @@ import { ISettings } from './settings.interface';
 
 const settingsSchema = new Schema<ISettings>(
      {
-          privacyPolicy: {
-               type: String,
-               default: '',
-          },
-          aboutUs: {
-               type: String,
-               default: '',
-          },
-          support: {
-               type: String,
-               default: '',
-          },
-          termsOfService: {
+          primaryColor: {
                type: String,
                default: '',
           },

@@ -23,8 +23,8 @@ const getSettings = catchAsync(async (req, res): Promise<void> => {
      });
 });
 
-const getPrivacyPolicy = catchAsync(async (req, res): Promise<void> => {
-     const result = await settingsService.getPrivacyPolicy();
+const getprimaryColor = catchAsync(async (req, res): Promise<void> => {
+     const result = await settingsService.getprimaryColor();
      sendResponse(res, {
           statusCode: StatusCodes.OK,
           success: true,
@@ -71,7 +71,7 @@ const getAboutUs = catchAsync(async (req, res): Promise<void> => {
 // });
 export const settingsController = {
      getSettings,
-     getPrivacyPolicy,
+     getprimaryColor,
      getAboutUs,
      getSupport,
      addSetting,

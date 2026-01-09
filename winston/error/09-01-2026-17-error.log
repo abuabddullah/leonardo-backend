@@ -1,0 +1,4 @@
+Fri Jan 09 2026 17:33:41 [SERVER-NAME] error: 10.10.7.103 - PUT /api/v1/settings 401 - 8.657 ms
+Fri Jan 09 2026 17:36:53 [SERVER-NAME] error: 10.10.7.103 - PUT /api/v1/settings 401 - 1.054 ms
+Fri Jan 09 2026 17:40:32 [SERVER-NAME] error: 10.10.7.103 - PUT /api/v1/settings 400 - 94.749 ms
+Fri Jan 09 2026 17:40:40 [SERVER-NAME] error: 10.10.7.103 - PUT /api/v1/settings 400 - 62.407 ms

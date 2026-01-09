@@ -5,6 +5,12 @@ import { StatusCodes } from 'http-status-codes';
 import AppError from '../../../errors/AppError';
 
 const upsertSettings = async (data: Partial<ISettings>): Promise<ISettings> => {
+     if (data.primaryColor) {
+          const hexColorRegex = /^#(?:[0-9a-fA-F]{3}){1,2}$/;
+          if (!hexColorRegex.test(data.primaryColor)) {
+               throw new AppError(StatusCodes.BAD_REQUEST, 'Primary color is not a valid hex color code');
+          }
+     }
      const existingSettings = await Settings.findOne({});
      if (existingSettings) {
           const updatedSettings = await Settings.findOneAndUpdate({}, data, {
@@ -42,13 +48,13 @@ const getSupport = async () => {
      }
      return settings.support;
 };
-const getPrivacyPolicy = async () => {
+const getprimaryColor = async () => {
      const settings: any = await Settings.findOne();
 
      if (!settings) {
           return '';
      }
-     return settings.privacyPolicy;
+     return { primaryColor: settings.primaryColor };
 };
 const getAboutUs = async () => {
      const settings: any = await Settings.findOne();
@@ -73,7 +79,7 @@ const getAccountDelete = async () => {
 export const settingsService = {
      upsertSettings,
      getSettings,
-     getPrivacyPolicy,
+     getprimaryColor,
      getAccountDelete,
      getSupport,
      getTermsOfService,
