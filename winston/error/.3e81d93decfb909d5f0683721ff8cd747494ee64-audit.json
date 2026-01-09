@@ -1,0 +1,20 @@
+{
+    "keep": {
+        "days": true,
+        "amount": 1
+    },
+    "auditLog": "/home/betopia/Desktop/everything_sparktech/leonardo-backend/winston/error/.3e81d93decfb909d5f0683721ff8cd747494ee64-audit.json",
+    "files": [
+        {
+            "date": 1767937869357,
+            "name": "/home/betopia/Desktop/everything_sparktech/leonardo-backend/winston/error/09-01-2026-11-error.log",
+            "hash": "82bab8d7a91d23310f20766111494b9d8bcf03d44eee24bcaa4e75dbadd3b8af"
+        },
+        {
+            "date": 1767939375903,
+            "name": "/home/betopia/Desktop/everything_sparktech/leonardo-backend/winston/error/09-01-2026-12-error.log",
+            "hash": "786bd6016f582f85937d3940ce80789e07f8435d14b99ae79d8b41383188ced2"
+        }
+    ],
+    "hashType": "sha256"
+}
