@@ -76,6 +76,193 @@ const getAbout = catchAsync(async (req: Request, res: Response) => {
      });
 });
 
+// support and appExplain controller
+const createSupport = catchAsync(async (req: Request, res: Response) => {
+     const { ...supportData } = req.body;
+     const result = await RuleService.createSupportToDB(supportData);
+
+     sendResponse(res, {
+          success: true,
+          statusCode: StatusCodes.OK,
+          message: 'Support content created successfully',
+          data: result,
+     });
+});
+
+const getSupport = catchAsync(async (req: Request, res: Response) => {
+     const result = await RuleService.getSupportFromDB();
+
+     sendResponse(res, {
+          success: true,
+          statusCode: StatusCodes.OK,
+          message: 'Support content retrieved successfully',
+          data: result,
+     });
+});
+const createAppExplain = catchAsync(async (req: Request, res: Response) => {
+     const { ...appExplainData } = req.body;
+     const result = await RuleService.createAppExplainToDB(appExplainData);
+
+     sendResponse(res, {
+          success: true,
+          statusCode: StatusCodes.OK,
+          message: 'App explanation created successfully',
+          data: result,
+     });
+});
+
+const getAppExplain = catchAsync(async (req: Request, res: Response) => {
+     const result = await RuleService.getAppExplainFromDB();
+
+     sendResponse(res, {
+          success: true,
+          statusCode: StatusCodes.OK,
+          message: 'App explanation retrieved successfully',
+          data: result,
+     });
+});
+// make resonable valdiaiton for allowedInvoicesCountForFreeUsers and defaultVat separetedly
+const createAllowedInvoicesCountForFreeUsers = catchAsync(async (req: Request, res: Response) => {
+     const { value } = req.body;
+     const result = await RuleService.createAllowedInvoicesCountForFreeUsersToDB(value);
+
+     sendResponse(res, {
+          success: true,
+          statusCode: StatusCodes.OK,
+          message: 'Allowed invoices count for free users created successfully',
+          data: result,
+     });
+});
+
+const getAllowedInvoicesCountForFreeUsers = catchAsync(async (req: Request, res: Response) => {
+     const result = await RuleService.getAllowedInvoicesCountForFreeUsersFromDB();
+
+     sendResponse(res, {
+          success: true,
+          statusCode: StatusCodes.OK,
+          message: 'Allowed invoices count for free users retrieved successfully',
+          data: result,
+     });
+});
+
+const createDefaultVat = catchAsync(async (req: Request, res: Response) => {
+     const { value } = req.body;
+     const result = await RuleService.createDefaultVatToDB(value);
+
+     sendResponse(res, {
+          success: true,
+          statusCode: StatusCodes.OK,
+          message: 'Default VAT created successfully',
+          data: result,
+     });
+});
+
+const getDefaultVat = catchAsync(async (req: Request, res: Response) => {
+     const result = await RuleService.getDefaultVatFromDB();
+
+     sendResponse(res, {
+          success: true,
+          statusCode: StatusCodes.OK,
+          message: 'Default VAT retrieved successfully',
+          data: result,
+     });
+});
+
+const createSocialMedia = catchAsync(async (req: Request, res: Response) => {
+     const { ...socialMediaData } = req.body;
+     const result = await RuleService.createSocialMediaToDB(socialMediaData);
+
+     sendResponse(res, {
+          success: true,
+          statusCode: StatusCodes.OK,
+          message: 'Social media link created successfully',
+          data: result,
+     });
+});
+
+const getSocialMedia = catchAsync(async (req: Request, res: Response) => {
+     const result = await RuleService.getSocialMediaFromDB();
+
+     sendResponse(res, {
+          success: true,
+          statusCode: StatusCodes.OK,
+          message: 'Social media links retrieved successfully',
+          data: result,
+     });
+});
+
+const togglePermission = catchAsync(async (req: Request, res: Response) => {
+     const { permissionType } = req.body;
+     const result = await RuleService.togglePermissionToDB(permissionType);
+
+     sendResponse(res, {
+          success: true,
+          statusCode: StatusCodes.OK,
+          message: 'Permission toggled successfully',
+          data: result,
+     });
+});
+
+const getPermission = catchAsync(async (req: Request, res: Response) => {
+     const { permissionType } = req.body;
+     const result = await RuleService.getPermissionFromDB(permissionType);
+
+     sendResponse(res, {
+          success: true,
+          statusCode: StatusCodes.OK,
+          message: 'Permission retrieved successfully',
+          data: result,
+     });
+});
+
+const upsertContent = catchAsync(async (req: Request, res: Response) => {
+     const { ...contentData } = req.body;
+     const result = await RuleService.upsertContentToDB(contentData);
+
+     sendResponse(res, {
+          success: true,
+          statusCode: StatusCodes.OK,
+          message: 'Content upserted successfully',
+          data: result,
+     });
+});
+
+const getContent = catchAsync(async (req: Request, res: Response) => {
+     const { type } = req.body;
+     const result = await RuleService.getContentFromDB(type);
+
+     sendResponse(res, {
+          success: true,
+          statusCode: StatusCodes.OK,
+          message: 'Content retrieved successfully',
+          data: result,
+     });
+});
+
+const upsertValuse = catchAsync(async (req: Request, res: Response) => {
+     const { valuesTypes, value } = req.body;
+     const result = await RuleService.upsertValuesToDB(valuesTypes, value);
+
+     sendResponse(res, {
+          success: true,
+          statusCode: StatusCodes.OK,
+          message: 'Value upserted successfully',
+          data: result,
+     });
+});
+
+const getValue = catchAsync(async (req: Request, res: Response) => {
+     const { valuesTypes } = req.body;
+     const result = await RuleService.getValueFromDB(valuesTypes);
+
+     sendResponse(res, {
+          success: true,
+          statusCode: StatusCodes.OK,
+          message: 'Value retrieved successfully',
+          data: result,
+     });
+});
+
 export const RuleController = {
      createPrivacyPolicy,
      getPrivacyPolicy,
@@ -83,4 +270,20 @@ export const RuleController = {
      getTermsAndCondition,
      createAbout,
      getAbout,
+     createSupport,
+     getSupport,
+     createAppExplain,
+     getAppExplain,
+     createDefaultVat,
+     getDefaultVat,
+     createAllowedInvoicesCountForFreeUsers,
+     getAllowedInvoicesCountForFreeUsers,
+     createSocialMedia,
+     getSocialMedia,
+     togglePermission,
+     getPermission,
+     upsertContent,
+     getContent,
+     upsertValuse,
+     getValue,
 };

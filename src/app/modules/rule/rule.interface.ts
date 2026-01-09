@@ -1,8 +1,40 @@
 import { Model } from 'mongoose';
 
+export enum EPermissionType {
+     IS_EMAIL_NOTIFICATIONS = 'is-email-notifications',
+     IS_APP_NOTIFICATIONS = 'is-app-notifications',
+     IS_AUTO_APPROVE_EVENTS = 'is-auto-approve-events',
+     IS_EXPIRED_EVENTS_AUTO_LOCK = 'is-expired-events-auto-lock',
+}
+
+export enum EValuesTypes {
+     ALLOWED_INVOICES_COUNT_FOR_FREE_USERS = 'allowedInvoicesCountForFreeUsers',
+     DEFAULT_VAT = 'defaultVat',
+}
+
+export enum EContentType {
+     privacy = 'privacy',
+     terms = 'terms',
+     about = 'about',
+     appExplain = 'appExplain',
+     support = 'support',
+     socialMedia = 'socialMedia',
+}
+
 export type IRule = {
      content: string;
-     type: 'privacy' | 'terms' | 'about';
+     type: EContentType;
+     permission: boolean;
+     permissionType: EPermissionType;
+     value: number;
+     valuesTypes: EValuesTypes;
+     socialMedia?: {
+          facebook: string;
+          twitter: string;
+          instagram: string;
+          linkedin: string;
+          whatsapp: string;
+     };
 };
 
 export type RuleModel = Model<IRule, Record<string, unknown>>;

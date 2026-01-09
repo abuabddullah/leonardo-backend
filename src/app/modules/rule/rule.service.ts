@@ -1,5 +1,5 @@
 import { StatusCodes } from 'http-status-codes';
-import { IRule } from './rule.interface';
+import { EContentType, EPermissionType, EValuesTypes, IRule } from './rule.interface';
 import { Rule } from './rule.model';
 import AppError from '../../../errors/AppError';
 
@@ -73,6 +73,180 @@ const getAboutFromDB = async () => {
      return result;
 };
 
+//  support and appExplain service
+const createSupportToDB = async (payload: IRule) => {
+     const isExistSupport = await Rule.findOne({ type: 'support' });
+     if (isExistSupport) {
+          const result = await Rule.findOneAndUpdate({ type: 'support' }, { content: payload?.content }, { new: true });
+          const message = 'Support Content Updated successfully';
+          return { message, result };
+     } else {
+          const result = await Rule.create({ ...payload, type: 'support' });
+          const message = 'Support Content Created successfully';
+          return { message, result };
+     }
+};
+
+const getSupportFromDB = async () => {
+     const result = await Rule.findOne({ type: 'support' });
+     if (!result) {
+          throw new AppError(StatusCodes.BAD_REQUEST, "Support content doesn't exist!");
+     }
+     return result;
+};
+
+const createAppExplainToDB = async (payload: IRule) => {
+     const isExistAppExplain = await Rule.findOne({ type: 'appExplain' });
+     if (isExistAppExplain) {
+          const result = await Rule.findOneAndUpdate({ type: 'appExplain' }, { content: payload?.content }, { new: true });
+          const message = 'App Explain Content Updated successfully';
+          return { message, result };
+     } else {
+          const result = await Rule.create({ ...payload, type: 'appExplain' });
+          const message = 'App Explain Content Created successfully';
+          return { message, result };
+     }
+};
+
+const getAppExplainFromDB = async () => {
+     const result = await Rule.findOne({ type: 'appExplain' });
+     if (!result) {
+          throw new AppError(StatusCodes.BAD_REQUEST, "App Explain content doesn't exist!");
+     }
+     return result;
+};
+
+// make resonable controller for allowedInvoicesCountForFreeUsers and defaultVat separetedly
+const createAllowedInvoicesCountForFreeUsersToDB = async (value: IRule) => {
+     const isExist = await Rule.findOne({ valuesTypes: 'allowedInvoicesCountForFreeUsers' });
+     if (isExist) {
+          const result = await Rule.findOneAndUpdate({ valuesTypes: 'allowedInvoicesCountForFreeUsers' }, { value }, { new: true });
+          const message = 'Allowed Invoices Count For Free Users Updated successfully';
+          return { message, result };
+     } else {
+          const result = await Rule.create({ value, valuesTypes: 'allowedInvoicesCountForFreeUsers' });
+          const message = 'Allowed Invoices Count For Free Users Created successfully';
+          return { message, result };
+     }
+};
+
+const getAllowedInvoicesCountForFreeUsersFromDB = async () => {
+     const result = await Rule.findOne({ valuesTypes: 'allowedInvoicesCountForFreeUsers' });
+     if (!result) {
+          throw new AppError(StatusCodes.BAD_REQUEST, "Allowed Invoices Count For Free Users content doesn't exist!");
+     }
+     return result;
+};
+
+const createDefaultVatToDB = async (value: IRule) => {
+     const isExist = await Rule.findOne({ valuesTypes: 'defaultVat' });
+     if (isExist) {
+          const result = await Rule.findOneAndUpdate({ valuesTypes: 'defaultVat' }, { value }, { new: true });
+          const message = 'Default VAT Updated successfully';
+          return { message, result };
+     } else {
+          const result = await Rule.create({ value, valuesTypes: 'defaultVat' });
+          const message = 'Default VAT Created successfully';
+          return { message, result };
+     }
+};
+
+const getDefaultVatFromDB = async () => {
+     const result = await Rule.findOne({ valuesTypes: 'defaultVat' });
+     if (!result) {
+          throw new AppError(StatusCodes.BAD_REQUEST, "Default VAT content doesn't exist!");
+     }
+     return result;
+};
+
+const createSocialMediaToDB = async (payload: IRule) => {
+     // Use .lean() to get a plain object instead of a Mongoose document
+     const isExistSocialMedia = await Rule.findOne({ type: 'socialMedia' }).select('+socialMedia').lean(); // This will return plain JavaScript object
+
+     if (isExistSocialMedia) {
+          // Merge the payload with the existing socialMedia object
+          const socialMediaDTO = { ...isExistSocialMedia.socialMedia, ...payload };
+
+          // Update the document
+          const result = await Rule.findOneAndUpdate({ type: 'socialMedia' }, { socialMedia: socialMediaDTO }, { new: true });
+
+          const message = 'Social Media Updated successfully';
+          return { message, result };
+     } else {
+          // If no document exists, create a new one
+          const result = await Rule.create({ ...payload, type: 'socialMedia' });
+          const message = 'Social Media Created successfully';
+          return { message, result };
+     }
+};
+
+const getSocialMediaFromDB = async () => {
+     const result = await Rule.findOne({ type: 'socialMedia' }).select('+socialMedia');
+     if (!result) {
+          throw new AppError(StatusCodes.BAD_REQUEST, "Social Media content doesn't exist!");
+     }
+     return result;
+};
+
+const togglePermissionToDB = async (permissionType: EPermissionType) => {
+     const isExistPermission = await Rule.findOne({ permissionType });
+     if (!isExistPermission) {
+          const result = await Rule.create({ permissionType, permission: true });
+          return result;
+     }
+     const result = await Rule.findOneAndUpdate({ permissionType }, { permission: !isExistPermission.permission }, { new: true });
+     return result;
+};
+
+const getPermissionFromDB = async (permissionType: EPermissionType) => {
+     const result = await Rule.findOne({ permissionType });
+     if (!result) {
+          throw new AppError(StatusCodes.BAD_REQUEST, `Permission with permissionType ${permissionType} doesn't exist!`);
+     }
+     return result;
+};
+
+const upsertContentToDB = async (payload: { type: EContentType; content: string }) => {
+     const isExistContent = await Rule.findOne({ type: payload.type });
+     if (isExistContent) {
+          const result = await Rule.findOneAndUpdate({ type: payload.type }, { content: payload.content }, { new: true });
+          return result;
+     } else {
+          const result = await Rule.create({ content: payload.content, type: payload.type });
+          return result;
+     }
+};
+
+const getContentFromDB = async (type: EContentType) => {
+     if (!type) {
+          throw new AppError(StatusCodes.BAD_REQUEST, 'Content type is required!');
+     }
+     const result = await Rule.findOne({ type });
+     if (!result) {
+          throw new AppError(StatusCodes.BAD_REQUEST, `${type} content doesn't exist!`);
+     }
+     return result;
+};
+
+const upsertValuesToDB = async (valuesTypes: EValuesTypes, value: number) => {
+     const result = await Rule.findOneAndUpdate({ valuesTypes }, { value }, { new: true, upsert: true });
+     if (!result) {
+          throw new AppError(StatusCodes.BAD_REQUEST, `Value with valuesTypes ${valuesTypes} doesn't exist!`);
+     }
+     return result;
+};
+
+const getValueFromDB = async (valuesTypes: EValuesTypes) => {
+     if (!valuesTypes) {
+          throw new AppError(StatusCodes.BAD_REQUEST, 'Values types is required!');
+     }
+     const result = await Rule.findOne({ valuesTypes });
+     if (!result) {
+          throw new AppError(StatusCodes.BAD_REQUEST, `Value with valuesTypes ${valuesTypes} doesn't exist!`);
+     }
+     return result;
+};
+
 export const RuleService = {
      createPrivacyPolicyToDB,
      getPrivacyPolicyFromDB,
@@ -80,4 +254,20 @@ export const RuleService = {
      getTermsAndConditionFromDB,
      createAboutToDB,
      getAboutFromDB,
+     createSupportToDB,
+     getSupportFromDB,
+     createAppExplainToDB,
+     getAppExplainFromDB,
+     createAllowedInvoicesCountForFreeUsersToDB,
+     getAllowedInvoicesCountForFreeUsersFromDB,
+     createDefaultVatToDB,
+     getDefaultVatFromDB,
+     getSocialMediaFromDB,
+     createSocialMediaToDB,
+     togglePermissionToDB,
+     getPermissionFromDB,
+     upsertContentToDB,
+     getContentFromDB,
+     upsertValuesToDB,
+     getValueFromDB,
 };
