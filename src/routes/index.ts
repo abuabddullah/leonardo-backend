@@ -3,6 +3,7 @@ import { UserRouter } from '../app/modules/user/user.route';
 import { AuthRouter } from '../app/modules/auth/auth.route';
 import SettingsRouter from '../app/modules/settings/settings.route';
 import { HistoryTrackerRoutes } from '../app/modules/HistoryTracker/HistoryTracker.route';
+import { RuleRoute } from '../app/modules/rule/rule.route';
 
 const router = express.Router();
 const routes = [
@@ -21,6 +22,10 @@ const routes = [
      {
           path: '/history-tracker',
           route: HistoryTrackerRoutes,
+     },
+     {
+          path: '/rules',
+          route: RuleRoute,
      },
 ];
 

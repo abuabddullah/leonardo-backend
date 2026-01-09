@@ -267,7 +267,7 @@ import { ${moduleName}Validation } from './${moduleName}.validation';
 
 const router = express.Router();
 
-router.post('/', auth(USER_ROLES.SUPER_ADMIN, USER_ROLES.ADMIN),
+router.post('/', auth(USER_ROLES.SUPER_ADMIN),
     fileUploadHandler(),
     parseFileData(FOLDER_NAMES.IMAGE),
     validateRequest(${moduleName}Validation.create${capitalize(moduleName)}ZodSchema), ${moduleName}Controller.create${capitalize(moduleName)});
@@ -276,13 +276,13 @@ router.get('/', ${moduleName}Controller.getAll${capitalize(moduleName)}s);
 
 router.get('/unpaginated', ${moduleName}Controller.getAllUnpaginated${capitalize(moduleName)}s);
 
-router.delete('/hard-delete/:id', auth(USER_ROLES.SUPER_ADMIN, USER_ROLES.ADMIN), ${moduleName}Controller.hardDelete${capitalize(moduleName)});
+router.delete('/hard-delete/:id', auth(USER_ROLES.SUPER_ADMIN), ${moduleName}Controller.hardDelete${capitalize(moduleName)});
 
 router.patch('/:id', fileUploadHandler(),
-    parseFileData(FOLDER_NAMES.IMAGE), auth(USER_ROLES.SUPER_ADMIN, USER_ROLES.ADMIN),
+    parseFileData(FOLDER_NAMES.IMAGE), auth(USER_ROLES.SUPER_ADMIN),
     validateRequest(${moduleName}Validation.update${capitalize(moduleName)}ZodSchema), ${moduleName}Controller.update${capitalize(moduleName)});
 
-router.delete('/:id', auth(USER_ROLES.SUPER_ADMIN, USER_ROLES.ADMIN), ${moduleName}Controller.delete${capitalize(moduleName)});
+router.delete('/:id', auth(USER_ROLES.SUPER_ADMIN), ${moduleName}Controller.delete${capitalize(moduleName)});
 
 router.get('/:id', ${moduleName}Controller.get${capitalize(moduleName)}ById);
 

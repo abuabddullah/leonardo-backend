@@ -99,31 +99,23 @@ const permissionZodSchema = z.object({
 });
 
 const contentZodSchema = z.object({
-     body: z
-          .object({
-               type: z.nativeEnum(EContentType, {
-                    required_error: 'Content type is required',
-               }),
-               content: z.union([
+     body: z.object({
+          type: z.nativeEnum(EContentType, {
+               required_error: 'Content type is required',
+          }),
+          content: z
+               .union([
                     z.object({
-                         facebook: z.string(),
-                         twitter: z.string(),
-                         instagram: z.string(),
-                         linkedin: z.string(),
-                         whatsapp: z.string(),
+                         facebook: z.string().optional(),
+                         twitter: z.string().optional(),
+                         instagram: z.string().optional(),
+                         linkedin: z.string().optional(),
+                         whatsapp: z.string().optional(),
                     }),
                     z.string(),
-               ]),
-          })
-          .superRefine((data, ctx) => {
-               if (data.type === EContentType.socialMedia && (typeof data.content !== 'object' || data.content === null)) {
-                    ctx.addIssue({
-                         path: ['content'],
-                         code: z.ZodIssueCode.custom,
-                         message: 'Social media content object is required',
-                    });
-               }
-          }),
+               ])
+               .optional(),
+     }),
 });
 
 const valuesZodSchema = z.object({

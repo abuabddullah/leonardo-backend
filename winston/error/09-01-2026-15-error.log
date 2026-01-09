@@ -10,3 +10,8 @@ Fri Jan 09 2026 15:28:21 [SERVER-NAME] error: 10.10.7.105 - POST /api/v1/users 4
 Fri Jan 09 2026 15:31:40 [SERVER-NAME] error: 10.10.7.105 - POST /api/v1/auth/verify-email 400 - 17.421 ms
 Fri Jan 09 2026 15:31:52 [SERVER-NAME] error: 10.10.7.105 - POST /api/v1/auth/verify-email 400 - 3.586 ms
 Fri Jan 09 2026 15:32:2 [SERVER-NAME] error: 10.10.7.105 - POST /api/v1/auth/verify-email 400 - 75.581 ms
+Fri Jan 09 2026 15:57:48 [SERVER-NAME] error: 10.10.7.103 - POST /api/v1/auth/rules 404 - 2.605 ms
+Fri Jan 09 2026 15:57:57 [SERVER-NAME] error: 10.10.7.103 - POST /api/v1/rules 404 - 0.522 ms
+Fri Jan 09 2026 15:57:59 [SERVER-NAME] error: 10.10.7.103 - POST /api/v1/rules 404 - 0.470 ms
+Fri Jan 09 2026 15:58:26 [SERVER-NAME] error: 10.10.7.103 - POST /api/v1/rules/content 404 - 0.426 ms
+Fri Jan 09 2026 15:58:35 [SERVER-NAME] error: 10.10.7.103 - GET /api/v1/rules/content 400 - 2.381 ms
