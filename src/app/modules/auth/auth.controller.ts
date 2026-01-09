@@ -22,7 +22,12 @@ const loginUser = catchAsync(async (req, res) => {
      if (config.node_env === 'production') {
           cookieOptions.sameSite = 'none';
      }
-     sendResponse(res, { success: true, statusCode: StatusCodes.OK, message: 'User logged in successfully.', data: { accessToken: result.accessToken, refreshToken: result.refreshToken } });
+     sendResponse(res, {
+          success: true,
+          statusCode: StatusCodes.OK,
+          message: 'User logged in successfully.',
+          data: { accessToken: result.accessToken, refreshToken: result.refreshToken, role: result.role },
+     });
 });
 
 const forgetPassword = catchAsync(async (req, res) => {
@@ -90,40 +95,32 @@ const googleAuthCallback = catchAsync(async (req, res) => {
                return res.status(StatusCodes.UNAUTHORIZED).json({
                     success: false,
                     message: 'Google authentication failed',
-                    error: err.message
+                    error: err.message,
                });
           }
 
           if (!user) {
                return res.status(StatusCodes.UNAUTHORIZED).json({
                     success: false,
-                    message: 'User not found'
+                    message: 'User not found',
                });
           }
 
           // Generate JWT tokens
-          const jwtData = { 
-               id: user._id, 
-               role: user.role, 
-               email: user.email 
+          const jwtData = {
+               id: user._id,
+               role: user.role,
+               email: user.email,
           };
-          
-          const accessToken = jwtHelper.createToken(
-               jwtData, 
-               config.jwt.jwt_secret as string, 
-               config.jwt.jwt_expire_in as string
-          );
-          
-          const refreshToken = jwtHelper.createToken(
-               jwtData, 
-               config.jwt.jwt_refresh_secret as string, 
-               config.jwt.jwt_refresh_expire_in as string
-          );
+
+          const accessToken = jwtHelper.createToken(jwtData, config.jwt.jwt_secret as string, config.jwt.jwt_expire_in as string);
+
+          const refreshToken = jwtHelper.createToken(jwtData, config.jwt.jwt_refresh_secret as string, config.jwt.jwt_refresh_expire_in as string);
 
           // Redirect to frontend with tokens
           const frontendUrl = config.frontend_url || 'http://localhost:3000';
           const redirectUrl = `${frontendUrl}/auth/callback?accessToken=${accessToken}&refreshToken=${refreshToken}&success=true`;
-          
+
           res.redirect(redirectUrl);
      })(req, res);
 });
@@ -139,56 +136,48 @@ const facebookAuthCallback = catchAsync(async (req, res) => {
                return res.status(StatusCodes.UNAUTHORIZED).json({
                     success: false,
                     message: 'Facebook authentication failed',
-                    error: err.message
+                    error: err.message,
                });
           }
 
           if (!user) {
                return res.status(StatusCodes.UNAUTHORIZED).json({
                     success: false,
-                    message: 'User not found'
+                    message: 'User not found',
                });
           }
 
           // Generate JWT tokens
-          const jwtData = { 
-               id: user._id, 
-               role: user.role, 
-               email: user.email 
+          const jwtData = {
+               id: user._id,
+               role: user.role,
+               email: user.email,
           };
-          
-          const accessToken = jwtHelper.createToken(
-               jwtData, 
-               config.jwt.jwt_secret as string, 
-               config.jwt.jwt_expire_in as string
-          );
-          
-          const refreshToken = jwtHelper.createToken(
-               jwtData, 
-               config.jwt.jwt_refresh_secret as string, 
-               config.jwt.jwt_refresh_expire_in as string
-          );
+
+          const accessToken = jwtHelper.createToken(jwtData, config.jwt.jwt_secret as string, config.jwt.jwt_expire_in as string);
+
+          const refreshToken = jwtHelper.createToken(jwtData, config.jwt.jwt_refresh_secret as string, config.jwt.jwt_refresh_expire_in as string);
 
           // Redirect to frontend with tokens
           const frontendUrl = config.frontend_url || 'http://localhost:3000';
           const redirectUrl = `${frontendUrl}/auth/callback?accessToken=${accessToken}&refreshToken=${refreshToken}&success=true`;
-          
+
           res.redirect(redirectUrl);
      })(req, res);
 });
 
-export const AuthController = { 
-     verifyEmail, 
-     loginUser, 
-     forgetPassword, 
-     resetPassword, 
-     changePassword, 
-     forgetPasswordByUrl, 
-     resetPasswordByUrl, 
-     resendOtp, 
+export const AuthController = {
+     verifyEmail,
+     loginUser,
+     forgetPassword,
+     resetPassword,
+     changePassword,
+     forgetPasswordByUrl,
+     resetPasswordByUrl,
+     resendOtp,
      refreshToken,
      googleAuth,
      googleAuthCallback,
      facebookAuth,
-     facebookAuthCallback
+     facebookAuthCallback,
 };

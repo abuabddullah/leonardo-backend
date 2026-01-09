@@ -17,7 +17,7 @@ import { createToken } from '../../../utils/createToken';
 //login
 const loginUserFromDB = async (payload: ILoginData) => {
      const { email, password } = payload;
-     
+
      const isExistUser = await User.findOne({ email }).select('+password');
      if (!isExistUser) {
           throw new AppError(StatusCodes.BAD_REQUEST, "User doesn't exist!");
@@ -62,7 +62,7 @@ const loginUserFromDB = async (payload: ILoginData) => {
      const accessToken = jwtHelper.createToken(jwtData, config.jwt.jwt_secret as Secret, config.jwt.jwt_expire_in as string);
      const refreshToken = jwtHelper.createToken(jwtData, config.jwt.jwt_refresh_secret as string, config.jwt.jwt_refresh_expire_in as string);
 
-     return { accessToken, refreshToken };
+     return { accessToken, refreshToken, role: isExistUser.role };
 };
 
 //forget password
