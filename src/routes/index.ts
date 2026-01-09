@@ -4,6 +4,7 @@ import { AuthRouter } from '../app/modules/auth/auth.route';
 import SettingsRouter from '../app/modules/settings/settings.route';
 import { HistoryTrackerRoutes } from '../app/modules/HistoryTracker/HistoryTracker.route';
 import { RuleRoute } from '../app/modules/rule/rule.route';
+import { WebsiteLogoRoutes } from '../app/modules/websiteLogo/websiteLogo.route';
 
 const router = express.Router();
 const routes = [
@@ -26,6 +27,10 @@ const routes = [
      {
           path: '/rules',
           route: RuleRoute,
+     },
+     {
+          path: '/website-logo',
+          route: WebsiteLogoRoutes,
      },
 ];
 
