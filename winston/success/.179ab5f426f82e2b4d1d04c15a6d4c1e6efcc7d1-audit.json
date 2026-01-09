@@ -1,0 +1,15 @@
+{
+    "keep": {
+        "days": true,
+        "amount": 1
+    },
+    "auditLog": "/home/betopia/Desktop/everything_sparktech/leonardo-backend/winston/success/.179ab5f426f82e2b4d1d04c15a6d4c1e6efcc7d1-audit.json",
+    "files": [
+        {
+            "date": 1767937869356,
+            "name": "/home/betopia/Desktop/everything_sparktech/leonardo-backend/winston/success/09-01-2026-11-success.log",
+            "hash": "ae9b3971081245feddd736df2c9d967d5249120dc539a8a8f4bc7d23788ea8e2"
+        }
+    ],
+    "hashType": "sha256"
+}
