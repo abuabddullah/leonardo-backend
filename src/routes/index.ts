@@ -5,6 +5,7 @@ import SettingsRouter from '../app/modules/settings/settings.route';
 import { HistoryTrackerRoutes } from '../app/modules/HistoryTracker/HistoryTracker.route';
 import { RuleRoute } from '../app/modules/rule/rule.route';
 import { WebsiteLogoRoutes } from '../app/modules/websiteLogo/websiteLogo.route';
+import { FaqRoutes } from '../app/modules/faq/faq.route';
 
 const router = express.Router();
 const routes = [
@@ -31,6 +32,10 @@ const routes = [
      {
           path: '/website-logo',
           route: WebsiteLogoRoutes,
+     },
+     {
+          path: '/faqs',
+          route: FaqRoutes,
      },
 ];
 

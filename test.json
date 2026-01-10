@@ -1,160 +1,8 @@
 {
   "info": {
-    "name": "Rule Management API",
+    "name": "FAQ Management API",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
-  "item": [
-    {
-      "name": "Toggle Permission",
-      "request": {
-        "method": "PATCH",
-        "header": [
-          {
-            "key": "Content-Type",
-            "value": "application/json"
-          },
-          {
-            "key": "Authorization",
-            "value": "Bearer {{access_token}}"
-          }
-        ],
-        "body": {
-          "mode": "raw",
-          "raw": "{\n  \"permissionType\": \"is-email-notifications\"\n}"
-        },
-        "url": {
-          "raw": "{{baseUrl}}/rules/permission",
-          "host": ["{{baseUrl}}"],
-          "path": ["rules", "permission"]
-        },
-        "description": "Toggle a specific permission. Requires ADMIN or SUPER_ADMIN role."
-      }
-    },
-    {
-      "name": "Get Permission",
-      "request": {
-        "method": "GET",
-        "header": [
-          {
-            "key": "Content-Type",
-            "value": "application/json"
-          }
-        ],
-        "url": {
-          "raw": "{{baseUrl}}/rules/permission?permissionType=is-email-notifications",
-          "host": ["{{baseUrl}}"],
-          "path": ["rules", "permission"],
-          "query": [
-            {
-              "key": "permissionType",
-              "value": "is-email-notifications"
-            }
-          ]
-        },
-        "description": "Get the status of a specific permission."
-      }
-    },
-    {
-      "name": "Upsert Content",
-      "request": {
-        "method": "PATCH",
-        "header": [
-          {
-            "key": "Content-Type",
-            "value": "application/json"
-          },
-          {
-            "key": "Authorization",
-            "value": "Bearer {{access_token}}"
-          }
-        ],
-        "body": {
-          "mode": "raw",
-          "raw": "{\n  \"type\": \"privacy\",\n  \"content\": \"This is the updated privacy policy content...\"\n}"
-        },
-        "url": {
-          "raw": "{{baseUrl}}/rules/content",
-          "host": ["{{baseUrl}}"],
-          "path": ["rules", "content"]
-        },
-        "description": "Update or insert content. Requires ADMIN or SUPER_ADMIN role."
-      }
-    },
-    {
-      "name": "Get Content",
-      "request": {
-        "method": "GET",
-        "header": [
-          {
-            "key": "Content-Type",
-            "value": "application/json"
-          }
-        ],
-        "url": {
-          "raw": "{{baseUrl}}/rules/content?type=privacy",
-          "host": ["{{baseUrl}}"],
-          "path": ["rules", "content"],
-          "query": [
-            {
-              "key": "type",
-              "value": "privacy"
-            }
-          ]
-        },
-        "description": "Get content by type."
-      }
-    },
-    {
-      "name": "Upsert Value",
-      "request": {
-        "method": "PATCH",
-        "header": [
-          {
-            "key": "Content-Type",
-            "value": "application/json"
-          },
-          {
-            "key": "Authorization",
-            "value": "Bearer {{access_token}}"
-          }
-        ],
-        "body": {
-          "mode": "raw",
-          "raw": "{\n  \"valuesTypes\": \"defaultVat\",\n  \"value\": 15\n}"
-        },
-        "url": {
-          "raw": "{{baseUrl}}/rules/value",
-          "host": ["{{baseUrl}}"],
-          "path": ["rules", "value"]
-        },
-        "description": "Update or insert a system value. Requires ADMIN or SUPER_ADMIN role."
-      }
-    },
-    {
-      "name": "Get Value",
-      "request": {
-        "method": "GET",
-        "header": [
-          {
-            "key": "Content-Type",
-            "value": "application/json"
-          }
-        ],
-        "url": {
-          "raw": "{{baseUrl}}/rules/value?valuesTypes=defaultVat",
-          "host": ["{{baseUrl}}"],
-          "path": ["rules", "value"],
-          "query": [
-            {
-              "key": "valuesTypes",
-              "value": "defaultVat"
-            }
-          ]
-        },
-        "description": "Get a system value by type."
-      }
-    }
-  ],
   "auth": {
     "type": "bearer",
     "bearer": [
@@ -169,6 +17,76 @@
     {
       "key": "baseUrl",
       "value": "http://10.10.7.103:7002/api/v1"
+    }
+  ],
+  "item": [
+    {
+      "name": "Create FAQ",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"question\": \"What is the return policy?\",\n  \"answer\": \"You can return items within 30 days of purchase with a valid receipt.\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/faqs",
+          "host": ["{{baseUrl}}"],
+          "path": ["faqs"]
+        },
+        "description": "Create a new FAQ. Requires ADMIN or SUPER_ADMIN role."
+      }
+    },
+    {
+      "name": "Get All FAQs",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "{{baseUrl}}/faqs",
+          "host": ["{{baseUrl}}"],
+          "path": ["faqs"]
+        },
+        "description": "Get all FAQs. Requires ADMIN or SUPER_ADMIN role."
+      }
+    },
+    {
+      "name": "Update FAQ",
+      "request": {
+        "method": "PATCH",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"question\": \"Updated question?\",\n  \"answer\": \"Updated answer.\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/faqs/123",
+          "host": ["{{baseUrl}}"],
+          "path": ["faqs", "123"]
+        },
+        "description": "Update an existing FAQ. Requires ADMIN or SUPER_ADMIN role."
+      }
+    },
+    {
+      "name": "Delete FAQ",
+      "request": {
+        "method": "DELETE",
+        "url": {
+          "raw": "{{baseUrl}}/faqs/123",
+          "host": ["{{baseUrl}}"],
+          "path": ["faqs", "123"]
+        },
+        "description": "Delete an FAQ. Requires ADMIN or SUPER_ADMIN role."
+      }
     }
   ]
 }

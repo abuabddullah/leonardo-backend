@@ -34,6 +34,16 @@
             "date": 1767957908448,
             "name": "/home/betopia/Desktop/everything_sparktech/leonardo-backend/winston/error/09-01-2026-17-error.log",
             "hash": "349a7b270b27e1b55da86e369158990c1884ce0b43e23a084077f8293838a513"
+        },
+        {
+            "date": 1767960052611,
+            "name": "/home/betopia/Desktop/everything_sparktech/leonardo-backend/winston/error/09-01-2026-18-error.log",
+            "hash": "d89d008ab1859926c3fb8c1c3a483b43838ea503dc9cff78008fead30618791d"
+        },
+        {
+            "date": 1768016769133,
+            "name": "/home/betopia/Desktop/everything_sparktech/leonardo-backend/winston/error/10-01-2026-09-error.log",
+            "hash": "82a259130c95fd2a2a50ac95bd258e5fa2db05edfc18ecbb4dd72cafd32d0632"
         }
     ],
     "hashType": "sha256"

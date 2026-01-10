@@ -1,0 +1,4 @@
+Fri Jan 09 2026 18:0:52 [SERVER-NAME] error: 10.10.7.34 - GET /api/v1/auth/login 404 - 3.605 ms
+Fri Jan 09 2026 18:1:13 [SERVER-NAME] error: 10.10.7.34 - GET /api/v1/auth/login 404 - 1.491 ms
+Fri Jan 09 2026 18:1:55 [SERVER-NAME] error: 10.10.7.34 - POST /api/v1/auth/login 400 - 274.447 ms
+Fri Jan 09 2026 18:2:48 [SERVER-NAME] error: 10.10.7.34 - POST /api/v1/auth/login 400 - 261.428 ms

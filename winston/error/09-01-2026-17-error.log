@@ -3,3 +3,5 @@ Fri Jan 09 2026 17:36:53 [SERVER-NAME] error: 10.10.7.103 - PUT /api/v1/settings
 Fri Jan 09 2026 17:40:32 [SERVER-NAME] error: 10.10.7.103 - PUT /api/v1/settings 400 - 94.749 ms
 Fri Jan 09 2026 17:40:40 [SERVER-NAME] error: 10.10.7.103 - PUT /api/v1/settings 400 - 62.407 ms
 Fri Jan 09 2026 17:44:1 [SERVER-NAME] error: 10.10.7.103 - POST /api/v1/website-logo 404 - 2.314 ms
+Fri Jan 09 2026 17:58:7 [SERVER-NAME] error: 10.10.7.34 - GET /api/v1/auth/login 404 - 11.929 ms
+Fri Jan 09 2026 17:59:4 [SERVER-NAME] error: 10.10.7.105 - POST /api/v1/auth/login 400 - 262.522 ms
