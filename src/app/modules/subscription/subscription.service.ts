@@ -7,6 +7,7 @@ import { AppleVerificationResult, GoogleVerificationResult } from '../../../type
 import { SubscriptionPlatform } from './subscription.constants';
 import { User } from '../user/user.model';
 import AppError from '../../../errors/AppError';
+import { Types } from 'mongoose';
 
 export const createSubscriptionIntoDB = async (payload: Partial<ISubscription> & { transactionReceipt?: string }) => {
      // check if the package is valid
@@ -46,6 +47,15 @@ export const createSubscriptionIntoDB = async (payload: Partial<ISubscription> &
           package: payload.package,
           platform: payload.platform,
           price: pkg.price,
+
+          // Package usage details
+          remainingEventCount: pkg.eventCountLimit,
+          packageEventCountLimit: pkg.eventCountLimit,
+          pricePerEvent: Number(pkg.price / pkg.eventCountLimit),
+          usedEventCount: 0,
+          remainingAllowedRefundAmount: pkg.price,
+          isRefunded: false,
+
           googleProductId: pkg.googleProductId,
           appleProductId: pkg.appleProductId,
           purchaseToken: payload.purchaseToken,
@@ -69,6 +79,46 @@ export const createSubscriptionIntoDB = async (payload: Partial<ISubscription> &
      return subscription;
 };
 
+const updateSubscriptionUsages = async (id: string | Types.ObjectId, mongooseTransactionSession?: any) => {
+     const subscription = await Subscription.findById(id);
+     if (!subscription) {
+          throw new AppError(StatusCodes.NOT_FOUND, 'Subscription not found');
+     }
+
+     if (subscription.isExpired) {
+          throw new AppError(StatusCodes.BAD_REQUEST, 'Subscription is already expired. Can not use');
+     }
+
+     if (subscription.isRefunded) {
+          throw new AppError(StatusCodes.BAD_REQUEST, 'Subscription is already refunded. Can not use');
+     }
+
+     if (subscription.usedEventCount >= subscription.packageEventCountLimit) {
+          throw new AppError(StatusCodes.BAD_REQUEST, 'Subscription Limit is expired. Can not use');
+     }
+
+     subscription.usedEventCount += 1;
+     subscription.remainingEventCount -= 1;
+     subscription.remainingAllowedRefundAmount -= Number(subscription.pricePerEvent * subscription.usedEventCount);
+     if (mongooseTransactionSession) {
+          // subscription.save({ session: mongooseTransactionSession });
+          if (subscription.usedEventCount >= subscription.packageEventCountLimit) {
+               subscription.isExpired = true;
+               subscription.save({ session: mongooseTransactionSession });
+          } else {
+               subscription.save({ session: mongooseTransactionSession });
+          }
+     } else {
+          if (subscription.usedEventCount >= subscription.packageEventCountLimit) {
+               subscription.isExpired = true;
+               await subscription.save();
+          } else {
+               await subscription.save();
+          }
+     }
+};
+
 export const SubscriptionServices = {
      createSubscriptionIntoDB,
+     updateSubscriptionUsages,
 };
