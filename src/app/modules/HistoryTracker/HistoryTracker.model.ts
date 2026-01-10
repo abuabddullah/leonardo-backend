@@ -13,19 +13,4 @@ const HistoryTrackerSchema = new Schema<IHistoryTracker>(
      { timestamps: true },
 );
 
-HistoryTrackerSchema.pre('find', function (next) {
-     this.find({ isDeleted: false });
-     next();
-});
-
-HistoryTrackerSchema.pre('findOne', function (next) {
-     this.findOne({ isDeleted: false });
-     next();
-});
-
-HistoryTrackerSchema.pre('aggregate', function (next) {
-     this.pipeline().unshift({ $match: { isDeleted: { $ne: true } } });
-     next();
-});
-
 export const HistoryTracker = model<IHistoryTracker>('HistoryTracker', HistoryTrackerSchema);

@@ -126,19 +126,19 @@ userSchema.pre('save', async function (next) {
      next();
 });
 
-// Query Middleware
-userSchema.pre('find', function (next) {
-     this.find({ isDeleted: { $ne: true } });
-     next();
-});
+// // Query Middleware
+// userSchema.pre('find', function (next) {
+//      this.find({ isDeleted: { $ne: true } });
+//      next();
+// });
 
-userSchema.pre('findOne', function (next) {
-     this.find({ isDeleted: { $ne: true } });
-     next();
-});
+// userSchema.pre('findOne', function (next) {
+//      this.find({ isDeleted: { $ne: true } });
+//      next();
+// });
 
-userSchema.pre('aggregate', function (next) {
-     this.pipeline().unshift({ $match: { isDeleted: { $ne: true } } });
-     next();
-});
+// userSchema.pre('aggregate', function (next) {
+//      this.pipeline().unshift({ $match: { isDeleted: { $ne: true } } });
+//      next();
+// });
 export const User = model<IUser, UserModel>('User', userSchema);

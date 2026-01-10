@@ -6,21 +6,6 @@
     "auditLog": "/home/betopia/Desktop/everything_sparktech/leonardo-backend/winston/success/.179ab5f426f82e2b4d1d04c15a6d4c1e6efcc7d1-audit.json",
     "files": [
         {
-            "date": 1767939390006,
-            "name": "/home/betopia/Desktop/everything_sparktech/leonardo-backend/winston/success/09-01-2026-12-success.log",
-            "hash": "85a2273173b607ebfb49e9c0a66a3b34cf5851333fd0f6fa0cbf9b4b97c1ffcf"
-        },
-        {
-            "date": 1767949130662,
-            "name": "/home/betopia/Desktop/everything_sparktech/leonardo-backend/winston/success/09-01-2026-14-success.log",
-            "hash": "ca9f4b4b91a73675025e0aefeb1683337a51cedc9d8a1cbd1c131b6e09cec401"
-        },
-        {
-            "date": 1767949844900,
-            "name": "/home/betopia/Desktop/everything_sparktech/leonardo-backend/winston/success/09-01-2026-15-success.log",
-            "hash": "d09c4d724d6ed959e83e6aa580f552d3cc8308214994b7b2d779ec90d9f90031"
-        },
-        {
             "date": 1767952965839,
             "name": "/home/betopia/Desktop/everything_sparktech/leonardo-backend/winston/success/09-01-2026-16-success.log",
             "hash": "00250a8f86a89954399b8c898b49ff8e5df14364c29de8e71ba281b6b1cbbb5e"
@@ -49,6 +34,11 @@
             "date": 1768025731387,
             "name": "/home/betopia/Desktop/everything_sparktech/leonardo-backend/winston/success/10-01-2026-12-success.log",
             "hash": "4943f84e417dcc4a431f24dddf6c765b03a74586c68748db347025c978a82bcd"
+        },
+        {
+            "date": 1768037607663,
+            "name": "/home/betopia/Desktop/everything_sparktech/leonardo-backend/winston/success/10-01-2026-15-success.log",
+            "hash": "563f6c3dce2b8db77fddf13d0c4bf7c5eb2de411a8e8e304bc682b683c4368e1"
         }
     ],
     "hashType": "sha256"

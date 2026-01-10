@@ -6,7 +6,8 @@ export const createPackageSchema = z.object({
           .object({
                name: z.string().nonempty('Name cannot be empty'),
                price: z.number().nonnegative('Price cannot be negative'),
-               features: z.array(z.string().nonempty('Feature cannot be empty')),
+               description: z.string().nonempty('Feature cannot be empty'),
+               features: z.array(z.string().nonempty('Feature cannot be empty')).optional(),
                interval: z.nativeEnum(PackageInterval).default(PackageInterval.MONTH),
                intervalCount: z.number().default(1),
                eventCountLimit: z.number().default(30),
@@ -30,6 +31,7 @@ export const updatePackageSchema = z.object({
           .object({
                name: z.string().nonempty('Name cannot be empty').optional(),
                price: z.number().nonnegative('Price cannot be negative'),
+               description: z.string().nonempty('Feature cannot be empty').optional(),
                features: z.array(z.string().nonempty('Feature cannot be empty')).optional(),
                interval: z.nativeEnum(PackageInterval).optional(),
                intervalCount: z.number().optional(),

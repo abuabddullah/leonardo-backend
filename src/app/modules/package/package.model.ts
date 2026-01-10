@@ -6,7 +6,8 @@ const packageSchema = new Schema<IPackage, PackageModel>(
      {
           name: { type: String, required: true },
           price: { type: Number, required: true },
-          features: { type: [String], required: true },
+          description: { type: String, required: true },
+          features: { type: [String] },
           interval: {
                type: String,
                enum: Object.values(PackageInterval),

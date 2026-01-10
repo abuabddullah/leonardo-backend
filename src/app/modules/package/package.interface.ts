@@ -5,7 +5,8 @@ export interface IPackage {
      _id: string;
      name: string;
      price: number;
-     features: string[];
+     description: string;
+     features?: string[];
      interval: PackageInterval;
      intervalCount: number;
      eventCountLimit: number;

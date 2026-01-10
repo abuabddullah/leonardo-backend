@@ -1,9 +1,0 @@
-Fri Jan 09 2026 14:34:36 [SERVER-NAME] info: [34m🔄 Connected to MongoDB[39m
-Fri Jan 09 2026 14:34:37 [SERVER-NAME] info: [33m🧹 Cleared existing rules[39m
-Fri Jan 09 2026 14:34:37 [SERVER-NAME] info: [32m✨ --------------> Rules seeded successfully <-------------- ✨[39m
-Fri Jan 09 2026 14:55:30 [SERVER-NAME] info: [34m🔄 Connected to MongoDB[39m
-Fri Jan 09 2026 14:55:30 [SERVER-NAME] info: [33m🧹 Cleared existing rules[39m
-Fri Jan 09 2026 14:58:52 [SERVER-NAME] info: [32mConfig validation successful.[39m
-Fri Jan 09 2026 14:58:53 [SERVER-NAME] info: [46m🚀 Database connected successfully[49m
-Fri Jan 09 2026 14:58:53 [SERVER-NAME] info: [33m♻️  Socket is listening on same port 7002[39m
-Fri Jan 09 2026 14:58:53 [SERVER-NAME] info: [46m♻️  Application listening on http://10.10.7.103:7002[49m
