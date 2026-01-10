@@ -51,4 +51,15 @@ export default {
           email: process.env.SUPER_ADMIN_EMAIL,
           password: process.env.SUPER_ADMIN_PASSWORD,
      },
+
+     google: {
+          package_name: process.env.GOOGLE_PACKAGE_NAME,
+          client_id: process.env.GOOGLE_CLIENT_ID,
+     },
+     apple: {
+          bundle_id: process.env.APPLE_BUNDLE_ID,
+          shared_secret: process.env.APPLE_SHARED_SECRET,
+          purchase_mode: process.env.APPLE_PURCHASE_MODE,
+          client_id: process.env.APPLE_CLIENT_ID,
+     },
 };

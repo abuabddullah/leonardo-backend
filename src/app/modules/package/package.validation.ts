@@ -1,28 +1,51 @@
 import { z } from 'zod';
+import { PackageInterval } from './package.constant';
 
-const createPackageZodSchema = z.object({
-     body: z.object({
-          title: z.string({ required_error: 'Title is required' }),
-          description: z.string({ required_error: 'Description is required' }),
-          price: z
-               .union([z.string(), z.number()])
-               .transform((val) => (typeof val === 'string' ? parseFloat(val) : val))
-               .refine((val) => !isNaN(val), {
-                    message: 'Price must be a valid number.',
-               }),
-          duration: z.enum(['1 month', '3 months', '6 months', '1 year'], {
-               required_error: 'Duration is required',
-          }),
-          paymentType: z.enum(['Monthly', 'Yearly'], {
-               required_error: 'Payment type is required',
-          }),
-          productId: z.string().optional(),
-          subscriptionType: z.enum(['app', 'web'], {
-               required_error: 'Subscription type is required',
-          }),
-     }),
+export const createPackageSchema = z.object({
+  body: z
+    .object({
+      name: z.string().nonempty('Name cannot be empty'),
+      price: z.number().nonnegative('Price cannot be negative'),
+      features: z.array(z.string().nonempty('Feature cannot be empty')),
+      googleProductId: z
+        .string()
+        .max(100, 'Android product ID must be within 100 characters')
+        .regex(/^[a-z0-9._]+$/, 'Invalid Android product ID')
+        .default(''),
+
+      appleProductId: z
+        .string()
+        .max(255, 'iOS product ID must be within 255 characters')
+        .regex(/^[A-Za-z0-9.]+$/, 'Invalid iOS product ID')
+        .default(''),
+    })
+    .strict(),
+});
+
+export const updatePackageSchema = z.object({
+  body: z
+    .object({
+      name: z.string().nonempty('Name cannot be empty').optional(),
+      price: z.number().nonnegative('Price cannot be negative').optional(),
+      features: z
+        .array(z.string().nonempty('Feature cannot be empty'))
+        .optional(),
+      interval: z.nativeEnum(PackageInterval).optional(),
+      googleProductId: z
+        .string()
+        .max(100, 'Android product ID must be within 100 characters')
+        .regex(/^[a-z0-9._]*$/, 'Invalid Android product ID')
+        .optional(),
+      appleProductId: z
+        .string()
+        .max(255, 'iOS product ID must be within 255 characters')
+        .regex(/^[A-Za-z0-9.]*$/, 'Invalid iOS product ID')
+        .optional(),
+    })
+    .strict(),
 });
 
 export const PackageValidation = {
-     createPackageZodSchema,
+  createPackageSchema,
+  updatePackageSchema,
 };

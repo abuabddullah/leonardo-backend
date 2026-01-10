@@ -1,16 +1,33 @@
 import { Model, Types } from 'mongoose';
+import {
+  SubscriptionPlatform,
+  SubscriptionStatus,
+} from './subscription.constants';
 
-export type ISubscription = {
-     customerId: string;
-     price: number;
-     userId: Types.ObjectId;
-     package: Types.ObjectId;
-     trxId: string;
-     remaining: number;
-     subscriptionId: string;
-     status: 'expired' | 'active' | 'cancel';
-     currentPeriodStart: string;
-     currentPeriodEnd: string;
-};
+export interface ISubscription {
+  _id: string;
+  user: Types.ObjectId;
+  package: Types.ObjectId;
+  platform: SubscriptionPlatform;
+  price: number;
 
-export type SubscriptionModel = Model<ISubscription, Record<string, unknown>>;
+  // Store identifiers
+  googleProductId?: string;
+  appleProductId?: string;
+
+  // Store subscription IDs
+  purchaseToken?: string; // Google Play
+  orderId?: string; // Google SKU
+  transactionId?: string; // Apple transactionId
+  originalTransactionId?: string; // Apple originalTransactionId
+
+  status: SubscriptionStatus;
+  startedAt: Date;
+  expiresAt?: Date;
+  canceledAt?: Date;
+
+  renewalCount: number;
+  isDeleted: boolean;
+}
+
+export type SubscriptionModel = Model<ISubscription>;

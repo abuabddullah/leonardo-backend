@@ -3,20 +3,16 @@ import AppError from '../../../errors/AppError';
 import { IHistoryTracker } from './HistoryTracker.interface';
 import { HistoryTracker } from './HistoryTracker.model';
 import QueryBuilder from '../../builder/QueryBuilder';
-import unlinkFile from '../../../shared/unlinkFile';
 
 const createHistoryTracker = async (payload: IHistoryTracker): Promise<IHistoryTracker> => {
      const result = await HistoryTracker.create(payload);
      if (!result) {
-          if(payload.image){
-               unlinkFile(payload.image);
-          }
           throw new AppError(StatusCodes.NOT_FOUND, 'HistoryTracker not found.');
      }
      return result;
 };
 
-const getAllHistoryTrackers = async (query: Record<string, any>): Promise<{ meta: { total: number; page: number; limit: number; }; result: IHistoryTracker[]; }> => {
+const getAllHistoryTrackers = async (query: Record<string, any>): Promise<{ meta: { total: number; page: number; limit: number }; result: IHistoryTracker[] }> => {
      const queryBuilder = new QueryBuilder(HistoryTracker.find(), query);
      const result = await queryBuilder.filter().sort().paginate().fields().modelQuery;
      const meta = await queryBuilder.countTotal();
@@ -31,15 +27,9 @@ const getAllUnpaginatedHistoryTrackers = async (): Promise<IHistoryTracker[]> =>
 const updateHistoryTracker = async (id: string, payload: Partial<IHistoryTracker>): Promise<IHistoryTracker | null> => {
      const isExist = await HistoryTracker.findById(id);
      if (!isExist) {
-          if(payload.image){
-               unlinkFile(payload.image);
-          }
           throw new AppError(StatusCodes.NOT_FOUND, 'HistoryTracker not found.');
      }
 
-     if(isExist.image){
-          unlinkFile(isExist.image);
-     }
      return await HistoryTracker.findByIdAndUpdate(id, payload, { new: true });
 };
 
@@ -59,16 +49,13 @@ const hardDeleteHistoryTracker = async (id: string): Promise<IHistoryTracker | n
      if (!result) {
           throw new AppError(StatusCodes.NOT_FOUND, 'HistoryTracker not found.');
      }
-     if(result.image){
-          unlinkFile(result.image);
-     }
      return result;
 };
 
 const getHistoryTrackerById = async (id: string): Promise<IHistoryTracker | null> => {
      const result = await HistoryTracker.findById(id);
      return result;
-};   
+};
 
 export const HistoryTrackerService = {
      createHistoryTracker,
@@ -77,5 +64,5 @@ export const HistoryTrackerService = {
      updateHistoryTracker,
      deleteHistoryTracker,
      hardDeleteHistoryTracker,
-     getHistoryTrackerById
+     getHistoryTrackerById,
 };

@@ -1,0 +1,5 @@
+Sat Jan 10 2026 12:15:32 [SERVER-NAME] info: [32mConfig validation successful.[39m
+Sat Jan 10 2026 12:15:32 [SERVER-NAME] info: [46m🚀 Database connected successfully[49m
+Sat Jan 10 2026 12:15:32 [SERVER-NAME] info: [33m♻️  Socket is listening on same port 7002[39m
+Sat Jan 10 2026 12:15:32 [SERVER-NAME] info: [46m♻️  Application listening on http://10.10.7.103:7002[49m
+Sat Jan 10 2026 12:17:50 [SERVER-NAME] info: [34mSIGTERM received. Shutting down gracefully...[39m

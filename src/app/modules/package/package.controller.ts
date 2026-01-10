@@ -1,78 +1,62 @@
+import { Request, Response } from 'express';
 import catchAsync from '../../../shared/catchAsync';
 import { PackageService } from './package.service';
 import sendResponse from '../../../shared/sendResponse';
 import { StatusCodes } from 'http-status-codes';
 
-const createPackage = catchAsync(async (req, res) => {
-     const result = await PackageService.createPackageToDB(req.body);
+const createPackage = catchAsync(async (req: Request, res: Response) => {
+  const result = await PackageService.createPackageIntoDB(req.body);
 
-     sendResponse(res, {
-          statusCode: StatusCodes.OK,
-          success: true,
-          message: 'Package created Successfully',
-          data: result,
-     });
+  sendResponse(res, {
+    statusCode: StatusCodes.OK,
+    success: true,
+    message: 'Package created successfully',
+    data: result,
+  });
 });
 
-const updatePackage = catchAsync(async (req, res) => {
-     const result = await PackageService.updatePackageToDB(req.params.id, req.body);
+// update package
+const updatePackage = catchAsync(async (req: Request, res: Response) => {
+  const result = await PackageService.updatePackageIntoDB(
+    req.params.id,
+    req.body
+  );
 
-     sendResponse(res, {
-          statusCode: StatusCodes.OK,
-          success: true,
-          message: 'Package updated Successfully',
-          data: result,
-     });
+  sendResponse(res, {
+    statusCode: StatusCodes.OK,
+    success: true,
+    message: 'Package updated successfully',
+    data: result,
+  });
 });
 
-const getPackage = catchAsync(async (req, res) => {
-     const result = await PackageService.getPackageFromDB(req.query);
-     sendResponse(res, {
-          statusCode: StatusCodes.OK,
-          success: true,
-          message: 'Package Retrieved Successfully',
-          data: result.packages,
-          meta: result.meta,
-     });
-});
-const getPackageByUser = catchAsync(async (req, res) => {
-     const result = await PackageService.getPackageByUserFromDB(req.query);
-     sendResponse(res, {
-          statusCode: StatusCodes.OK,
-          success: true,
-          message: 'Package Retrieved Successfully',
-          data: result.packages,
-          meta: result.meta,
-     });
+// delete package
+const deletePackage = catchAsync(async (req: Request, res: Response) => {
+  const result = await PackageService.deletePackageFromDB(req.params.id);
+
+  sendResponse(res, {
+    statusCode: StatusCodes.OK,
+    success: true,
+    message: 'Package deleted successfully',
+    data: result,
+  });
 });
 
-const packageDetails = catchAsync(async (req, res) => {
-     const result = await PackageService.getPackageDetailsFromDB(req.params.id);
+// get all packages
+const getAllPackages = catchAsync(async (req: Request, res: Response) => {
+  const result = await PackageService.getAllPackagesFromDB();
 
-     sendResponse(res, {
-          statusCode: StatusCodes.OK,
-          success: true,
-          message: 'Package Details Retrieved Successfully',
-          data: result,
-     });
-});
-
-const deletePackage = catchAsync(async (req, res) => {
-     const result = await PackageService.deletePackageToDB(req.params.id);
-
-     sendResponse(res, {
-          statusCode: StatusCodes.OK,
-          success: true,
-          message: 'Package Deleted Successfully',
-          data: result,
-     });
+  sendResponse(res, {
+    statusCode: StatusCodes.OK,
+    success: true,
+    message: 'Packages fetched successfully',
+    data: result,
+  });
 });
 
 export const PackageController = {
-     createPackage,
-     updatePackage,
-     getPackage,
-     packageDetails,
-     deletePackage,
-     getPackageByUser,
+  createPackage,
+  getAllPackages,
+  updatePackage,
+  deletePackage,
 };

@@ -1,3 +1,5 @@
+import { Types } from 'mongoose';
+
 export type IVerifyEmail = {
      email: string;
      oneTimeCode: number;
@@ -17,4 +19,10 @@ export type IChangePassword = {
      currentPassword: string;
      newPassword: string;
      confirmPassword: string;
+};
+
+export type IJwtData = {
+     id: string | Types.ObjectId;
+     role: string;
+     email: string;
 };

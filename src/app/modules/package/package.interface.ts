@@ -1,16 +1,15 @@
 import { Model } from 'mongoose';
+import { PackageInterval } from './package.constant';
 
-export type IPackage = {
-     title: string;
-     description: string;
-     price: number;
-     priceId: string;
-     duration: '1 month' | '3 months' | '6 months' | '1 year';
-     paymentType: 'Monthly' | 'Yearly';
-     productId?: string;
-     subscriptionType: 'app' | 'web';
-     status: 'active' | 'inactive';
-     isDeleted: boolean;
-};
+export interface IPackage {
+  _id: string;
+  name: string;
+  price?: number;
+  features: string[];
+  interval: PackageInterval;
+  googleProductId?: string; // Google Play SKU
+  appleProductId?: string; // App Store Product ID
+  isDeleted: boolean;
+}
 
-export type PackageModel = Model<IPackage, Record<string, unknown>>;
+export type PackageModel = Model<IPackage>;
