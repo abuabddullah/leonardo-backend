@@ -6,6 +6,8 @@ import { User } from '../app/modules/user/user.model';
 import { jwtHelper } from '../helpers/jwtHelper';
 
 // Google OAuth Strategy
+// Commented out until proper credentials are provided
+/*
 passport.use(
      new GoogleStrategy(
           {
@@ -53,6 +55,8 @@ passport.use(
 );
 
 // Facebook OAuth Strategy
+// Commented out until proper credentials are provided
+/*
 passport.use(
      new FacebookStrategy(
           {
@@ -99,6 +103,7 @@ passport.use(
           },
      ),
 );
+*/
 
 // Serialize & Deserialize User
 passport.serializeUser((user: any, done) => {

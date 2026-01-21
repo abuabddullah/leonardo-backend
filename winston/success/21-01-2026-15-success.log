@@ -1,0 +1,10 @@
+Wed Jan 21 2026 15:46:48 [SERVER-NAME] info: [32mConfig validation successful.[39m
+Wed Jan 21 2026 15:46:48 [SERVER-NAME] info: [46m🚀 Database connected successfully[49m
+Wed Jan 21 2026 15:46:48 [SERVER-NAME] info: [33m♻️  Socket is listening on same port 7002[39m
+Wed Jan 21 2026 15:46:48 [SERVER-NAME] info: [46m♻️  Application listening on http://10.10.7.103:7002[49m
+Wed Jan 21 2026 15:46:55 [SERVER-NAME] info: [34mSIGTERM received. Shutting down gracefully...[39m
+Wed Jan 21 2026 15:46:55 [SERVER-NAME] info: [32mConfig validation successful.[39m
+Wed Jan 21 2026 15:46:56 [SERVER-NAME] info: [46m🚀 Database connected successfully[49m
+Wed Jan 21 2026 15:46:56 [SERVER-NAME] info: [33m♻️  Socket is listening on same port 7002[39m
+Wed Jan 21 2026 15:46:56 [SERVER-NAME] info: [46m♻️  Application listening on http://10.10.7.103:7002[49m
+Wed Jan 21 2026 15:47:18 [SERVER-NAME] info: 10.10.7.103 - POST /api/v1/auth/login 200 - 275.553 ms

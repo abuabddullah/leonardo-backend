@@ -6,39 +6,9 @@
     "auditLog": "/home/betopia/Desktop/everything_sparktech/leonardo-backend/winston/success/.179ab5f426f82e2b4d1d04c15a6d4c1e6efcc7d1-audit.json",
     "files": [
         {
-            "date": 1767952965839,
-            "name": "/home/betopia/Desktop/everything_sparktech/leonardo-backend/winston/success/09-01-2026-16-success.log",
-            "hash": "00250a8f86a89954399b8c898b49ff8e5df14364c29de8e71ba281b6b1cbbb5e"
-        },
-        {
-            "date": 1767957908303,
-            "name": "/home/betopia/Desktop/everything_sparktech/leonardo-backend/winston/success/09-01-2026-17-success.log",
-            "hash": "2f1ccfd97b9983ead83c53007dda9ef381648c0e6c8aecd1920c49b34e951e79"
-        },
-        {
-            "date": 1767960366316,
-            "name": "/home/betopia/Desktop/everything_sparktech/leonardo-backend/winston/success/09-01-2026-18-success.log",
-            "hash": "856d280062f6a11d89cc45a76be04bbfc0affd1e0eab930437b1eab2181702f7"
-        },
-        {
-            "date": 1768016784979,
-            "name": "/home/betopia/Desktop/everything_sparktech/leonardo-backend/winston/success/10-01-2026-09-success.log",
-            "hash": "897f8e821e79c874b50be2d314965670c9843be9e0b3a6bc62df8e840993c361"
-        },
-        {
-            "date": 1768024119795,
-            "name": "/home/betopia/Desktop/everything_sparktech/leonardo-backend/winston/success/10-01-2026-11-success.log",
-            "hash": "0c464407d769131cde19b38e5ea004f7ea6181627c463abb9ee9d1f538bd925d"
-        },
-        {
-            "date": 1768025731387,
-            "name": "/home/betopia/Desktop/everything_sparktech/leonardo-backend/winston/success/10-01-2026-12-success.log",
-            "hash": "4943f84e417dcc4a431f24dddf6c765b03a74586c68748db347025c978a82bcd"
-        },
-        {
-            "date": 1768037607663,
-            "name": "/home/betopia/Desktop/everything_sparktech/leonardo-backend/winston/success/10-01-2026-15-success.log",
-            "hash": "563f6c3dce2b8db77fddf13d0c4bf7c5eb2de411a8e8e304bc682b683c4368e1"
+            "date": 1768988497340,
+            "name": "/home/betopia/Desktop/everything_sparktech/leonardo-backend/winston/success/21-01-2026-15-success.log",
+            "hash": "dfc13f945d4767634f84e87de1273a0f3c2aae14de103abb0f3d59424d84de74"
         }
     ],
     "hashType": "sha256"
