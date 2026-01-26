@@ -83,6 +83,34 @@ const userSchema = new Schema<IUser, UserModel>(
                },
                select: false,
           },
+          isNewMatchNotificationEnabled: {
+               type: Boolean,
+               default: false,
+          },
+          isNewStatusUploadNotificaitonEnabled: {
+               type: Boolean,
+               default: false,
+          },
+          isNewMessageRecievedNotificationEnabled: {
+               type: Boolean,
+               default: false,
+          },
+          isEventUpdateNotificationEnabled: {
+               type: Boolean,
+               default: false,
+          },
+          isUpcomingEventReminderNotificationEnabled: {
+               type: Boolean,
+               default: false,
+          },
+          isProfileViewNotificationEnabled: {
+               type: Boolean,
+               default: false,
+          },
+          isNewAppUpdateNotificationEnabled: {
+               type: Boolean,
+               default: false,
+          },
      },
      { timestamps: true },
 );

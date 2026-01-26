@@ -32,8 +32,31 @@ const updateUserZodSchema = z.object({
      }),
 });
 
+const toggleUserNotification = z.object({
+     body: z
+          .object({
+               isNewMatchNotificationEnabled: z.boolean().optional(),
+               isNewStatusUploadNotificaitonEnabled: z.boolean().optional(),
+               isNewMessageRecievedNotificationEnabled: z.boolean().optional(),
+               isEventUpdateNotificationEnabled: z.boolean().optional(),
+               isUpcomingEventReminderNotificationEnabled: z.boolean().optional(),
+               isProfileViewNotificationEnabled: z.boolean().optional(),
+               isNewAppUpdateNotificationEnabled: z.boolean().optional(),
+          })
+          .superRefine((data, ctx) => {
+               const hasAtLeastOneField = Object.values(data).some((value) => value !== undefined);
+               if (!hasAtLeastOneField) {
+                    ctx.addIssue({
+                         code: z.ZodIssueCode.custom,
+                         message: 'At least one notification field must be provided',
+                    });
+               }
+          }),
+});
+
 export const UserValidation = {
      createUserZodSchema,
      updateUserZodSchema,
      createBusinessUserZodSchema,
+     toggleUserNotification,
 };

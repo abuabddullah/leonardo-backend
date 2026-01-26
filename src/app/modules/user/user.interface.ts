@@ -18,6 +18,14 @@ export type IUser = {
           oneTimeCode: number;
           expireAt: Date;
      };
+     // for notifications
+     isNewMatchNotificationEnabled: boolean;
+     isNewStatusUploadNotificaitonEnabled: boolean;
+     isNewMessageRecievedNotificationEnabled: boolean;
+     isEventUpdateNotificationEnabled: boolean;
+     isUpcomingEventReminderNotificationEnabled: boolean;
+     isProfileViewNotificationEnabled: boolean;
+     isNewAppUpdateNotificationEnabled: boolean;
 };
 
 export type UserModel = {
