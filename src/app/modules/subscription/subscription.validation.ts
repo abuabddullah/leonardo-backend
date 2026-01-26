@@ -7,16 +7,24 @@ export const createSubscriptionSchema = z.object({
                package: z.string().min(24, 'Invalid package ID').nonempty('Package ID is required'),
                platform: z.nativeEnum(SubscriptionPlatform),
                purchaseToken: z
-                    .string()
-                    .min(20, 'Purchase token too short')
-                    .max(255, 'Purchase token too long')
-                    .regex(/^[A-Za-z0-9._-]+$/, 'Invalid purchase token')
+                    .union([
+                         z
+                              .string()
+                              .min(20, 'Purchase token too short')
+                              .max(255, 'Purchase token too long')
+                              .regex(/^[A-Za-z0-9._-]+$/, 'Invalid purchase token'),
+                         z.null(),
+                    ])
                     .optional(),
                transactionReceipt: z
-                    .string()
-                    .min(100, 'Receipt too short')
-                    .max(5000, 'Receipt too long')
-                    .regex(/^[A-Za-z0-9+/=]+$/, 'Invalid receipt format')
+                    .union([
+                         z
+                              .string()
+                              .min(100, 'Receipt too short')
+                              .max(5000, 'Receipt too long')
+                              .regex(/^[A-Za-z0-9+/=]+$/, 'Invalid receipt format'),
+                         z.null(),
+                    ])
                     .optional(),
           })
           .superRefine((data, context) => {

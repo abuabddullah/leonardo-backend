@@ -6,6 +6,8 @@ import { HistoryTrackerRoutes } from '../app/modules/HistoryTracker/HistoryTrack
 import { RuleRoute } from '../app/modules/rule/rule.route';
 import { WebsiteLogoRoutes } from '../app/modules/websiteLogo/websiteLogo.route';
 import { FaqRoutes } from '../app/modules/faq/faq.route';
+import { PackageRoutes } from '../app/modules/package/package.route';
+import { subscriptionRoutes } from '../app/modules/subscription/subscription.route';
 
 const router = express.Router();
 const routes = [
@@ -36,6 +38,14 @@ const routes = [
      {
           path: '/faqs',
           route: FaqRoutes,
+     },
+     {
+          path: '/packages',
+          route: PackageRoutes,
+     },
+     {
+          path: '/subscriptions',
+          route: subscriptionRoutes,
      },
 ];
 

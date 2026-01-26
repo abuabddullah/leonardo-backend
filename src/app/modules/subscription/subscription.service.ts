@@ -18,6 +18,15 @@ export const createSubscriptionIntoDB = async (payload: Partial<ISubscription> &
 
      let verificationResult: GoogleVerificationResult & AppleVerificationResult;
 
+     // let verificationResult: GoogleVerificationResult & AppleVerificationResult = {
+     //      valid: true,
+     //      startedAt: new Date('2026-01-01T12:00:00Z'),
+     //      expiresAt: new Date('2027-01-01T12:00:00Z'),
+     //      status: SubscriptionStatus.ACTIVE,
+     //      orderId: 'order_12345',
+     //      linkedPurchaseToken: 'purchase_token_98765',
+     // };
+
      if (payload.platform === SubscriptionPlatform.GOOGLE) {
           if (!payload.purchaseToken) {
                throw new AppError(StatusCodes.BAD_REQUEST, 'Purchase token is required for Google Play subscriptions');
