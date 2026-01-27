@@ -28,6 +28,7 @@ router.get('/unpaginated', EventController.getAllUnpaginatedEvents);
 
 router.delete('/hard-delete/:id', auth(USER_ROLES.SUPER_ADMIN), EventController.hardDeleteEvent);
 router.get('/qr-route/:id', EventController.getEventByQr);
+router.post('/report/:id', validateRequest(EventValidation.reportAgainstEventById), EventController.reportAgainstEventById);
 
 router.patch(
      '/:id',

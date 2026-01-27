@@ -44,8 +44,17 @@ const updateEventZodSchema = z.object({
           eventAttendeeLimit: z.number().optional(),
      }),
 });
+const reportAgainstEventById = z.object({
+     body: z.object({
+          reason: z.string(),
+     }),
+     params: z.object({
+          id: z.string(),
+     }),
+});
 
 export const EventValidation = {
      createEventZodSchema,
      updateEventZodSchema,
+     reportAgainstEventById,
 };

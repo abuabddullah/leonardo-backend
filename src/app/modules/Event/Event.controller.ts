@@ -107,6 +107,19 @@ const getEventByQr = catchAsync(async (req: Request, res: Response) => {
      });
 });
 
+// reportAgainstEventById,
+const reportAgainstEventById = catchAsync(async (req: Request, res: Response) => {
+     const { id } = req.params;
+     const result = await EventService.reportAgainstEventById(id, req.body, req.user);
+
+     sendResponse(res, {
+          statusCode: 200,
+          success: true,
+          message: 'Event reported successfully',
+          data: result || undefined,
+     });
+});
+
 export const EventController = {
      createEvent,
      getAllEvents,
@@ -117,4 +130,5 @@ export const EventController = {
      hardDeleteEvent,
      getEventById,
      getEventByQr,
+     reportAgainstEventById,
 };
