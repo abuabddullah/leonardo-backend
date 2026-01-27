@@ -4,17 +4,21 @@ export enum ERecordType {
      BLOCK_USER = 'BLOCK_USER',
      MATCH_USER = 'MATCH_USER',
      REPORT_USER = 'REPORT_USER',
+     REPORT_EVENT = 'REPORT_EVENT',
+     EVENT_GUEST = 'EVENT_GUEST',
 }
 
 export enum EReferenceModule {
      USER = 'User',
+     EVENT = 'Event',
 }
 
 export interface IHistoryTracker {
-     createdBy: Types.ObjectId;
+     approachedBy: Types.ObjectId;
      recordType: ERecordType;
      referenceModule: EReferenceModule;
      referenceId: Types.ObjectId;
+     description?: string;
      createdAt: Date;
      updatedAt: Date;
      isDeleted: boolean;

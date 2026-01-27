@@ -8,6 +8,7 @@ import { WebsiteLogoRoutes } from '../app/modules/websiteLogo/websiteLogo.route'
 import { FaqRoutes } from '../app/modules/faq/faq.route';
 import { PackageRoutes } from '../app/modules/package/package.route';
 import { subscriptionRoutes } from '../app/modules/subscription/subscription.route';
+import { EventRoutes } from '../app/modules/Event/Event.route';
 
 const router = express.Router();
 const routes = [
@@ -46,6 +47,10 @@ const routes = [
      {
           path: '/subscriptions',
           route: subscriptionRoutes,
+     },
+     {
+          path: '/events',
+          route: EventRoutes,
      },
 ];
 

@@ -5,10 +5,11 @@ const objectIdSchema = (filedName: string) => z.string().regex(/^[a-f\d]{24}$/i,
 
 const createHistoryTrackerZodSchema = z.object({
      body: z.object({
-          createdBy: objectIdSchema('createdBy'),
+          // approachedBy: objectIdSchema('approachedBy'),
           recordType: z.nativeEnum(ERecordType),
           referenceModule: z.nativeEnum(EReferenceModule),
           referenceId: objectIdSchema('referenceId'),
+          description: z.string().optional(),
      }),
 });
 
