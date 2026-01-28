@@ -95,6 +95,18 @@ const getEventById = catchAsync(async (req: Request, res: Response) => {
      });
 });
 
+const getEventGuests = catchAsync(async (req: Request, res: Response) => {
+     const { id } = req.params;
+     const result = await EventService.getEventGuests(id, req.query);
+
+     sendResponse(res, {
+          statusCode: 200,
+          success: true,
+          message: 'Event retrieved successfully',
+          data: result || undefined,
+     });
+});
+
 const getEventByQr = catchAsync(async (req: Request, res: Response) => {
      const { id } = req.params;
      const result = await EventService.getEventByQr(id);
@@ -123,6 +135,7 @@ const reportAgainstEventById = catchAsync(async (req: Request, res: Response) =>
 export const EventController = {
      createEvent,
      getAllEvents,
+     getEventGuests,
      getAllEventsForAdmin,
      getAllUnpaginatedEvents,
      updateEvent,

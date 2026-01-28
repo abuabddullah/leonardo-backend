@@ -11,6 +11,7 @@ import { USER_ROLES } from '../../../enums/user';
 import { generateQRCode } from '../../../utils/generateQRCode';
 import { EvenRegistration } from '../EvenRegistration/EvenRegistration.model';
 import generateOTP from '../../../utils/generateOTP';
+import { EvenRegistrationService } from '../EvenRegistration/EvenRegistration.service';
 
 const createEvent = async (payload: IEvent, user: { id: string }): Promise<IEvent> => {
      let result;
@@ -199,6 +200,19 @@ const getEventById = async (id: string, user: any): Promise<IEvent | null> => {
      return result;
 };
 
+const getEventGuests = async (id: string, query: Record<string, any>) => {
+     const result = await Event.findOne({ _id: new mongoose.Types.ObjectId(id), isDeleted: false, isVisibilityPublic: true });
+     if (!result) {
+          throw new AppError(StatusCodes.NOT_FOUND, 'Event not found.');
+     }
+     const eventRegistrations = await EvenRegistrationService.getAllEvenRegistrations({
+          event: result._id.toString(),
+          fields: 'user',
+          ...query,
+     });
+     return eventRegistrations;
+};
+
 const getEventByQr = async (eventId: string) => {
      const result = await Event.findById(eventId).select('eventType image images eventLocation eventDateTime eventDescription isApproved isLocked registrationCount');
      if (!result) {
@@ -250,6 +264,7 @@ const reportAgainstEventById = async (eventId: string, reportData: { reason: str
 export const EventService = {
      createEvent,
      getAllEvents,
+     getEventGuests,
      getAllEventsForAdmin,
      getAllUnpaginatedEvents,
      updateEvent,

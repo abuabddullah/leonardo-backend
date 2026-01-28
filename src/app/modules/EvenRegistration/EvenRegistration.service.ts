@@ -73,7 +73,7 @@ const getAllEvenRegistrationsForAdmin = async (query: Record<string, any>): Prom
      return { meta, result };
 };
 const getAllEvenRegistrations = async (query: Record<string, any>): Promise<{ meta: { total: number; page: number; limit: number }; result: IEvenRegistration[] }> => {
-     const queryBuilder = new QueryBuilder(EvenRegistration.find({ isDeleted: false, isProfileVisibleToAttendees: true }), query);
+     const queryBuilder = new QueryBuilder(EvenRegistration.find({ isDeleted: false, isProfileVisibleToAttendees: true }).populate('user', 'name image'), query);
      const result = await queryBuilder.filter().sort().paginate().fields().modelQuery;
      const meta = await queryBuilder.countTotal();
      return { meta, result };
