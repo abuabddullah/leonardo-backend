@@ -4,15 +4,15 @@ import { IEvent } from './Event.interface';
 import { Event } from './Event.model';
 import QueryBuilder from '../../builder/QueryBuilder';
 import unlinkFile from '../../../shared/unlinkFile';
-import { HistoryTracker } from '../HistoryTracker/HistoryTracker.model';
 import mongoose from 'mongoose';
-import { ERecordType, EReferenceModule } from '../HistoryTracker/HistoryTracker.interface';
 import { EPermissionType } from '../rule/rule.interface';
 import { RuleService } from '../rule/rule.service';
 import { USER_ROLES } from '../../../enums/user';
 import { generateQRCode } from '../../../utils/generateQRCode';
+import { EvenRegistration } from '../EvenRegistration/EvenRegistration.model';
+import generateOTP from '../../../utils/generateOTP';
 
-const createEvent = async (payload: IEvent): Promise<IEvent> => {
+const createEvent = async (payload: IEvent, user: { id: string }): Promise<IEvent> => {
      let result;
      try {
           // make the eventDateTime from eventDate and eventTime
@@ -21,12 +21,14 @@ const createEvent = async (payload: IEvent): Promise<IEvent> => {
           if (payload.eventDateTime < new Date()) {
                throw new AppError(StatusCodes.BAD_REQUEST, 'Event date and time must be in the future.');
           }
+          payload.createdBy = new mongoose.Types.ObjectId(user.id);
+          payload.eventCode = generateOTP(4);
           result = await Event.create(payload);
           if (!result) {
                throw new AppError(StatusCodes.NOT_FOUND, 'Event not found.');
           }
           // generate qr code
-          const qrCode = await generateQRCode(result._id.toString());
+          const qrCode = await generateQRCode(result._id.toString(), result.eventCode.toString());
           result.eventQRImage = qrCode.qrImagePath;
           await result.save();
           return result;
@@ -59,7 +61,7 @@ const getAllEvents = async (
      meta: { total: number; page: number; limit: number };
      result: IEvent[];
 }> => {
-     const queryBuilder = new QueryBuilder(Event.find(), query);
+     const queryBuilder = new QueryBuilder(Event.find({ isDeleted: false, isApproved: true, isVisibilityPublic: true }), query);
 
      let result = await queryBuilder.filter().search(['eventName']).sort().paginate().fields().modelQuery;
 
@@ -93,7 +95,7 @@ const getAllEvents = async (
 };
 
 const getAllUnpaginatedEvents = async (): Promise<IEvent[]> => {
-     const result = await Event.find();
+     const result = await Event.find({ isDeleted: false, isApproved: true, isVisibilityPublic: true });
      return result;
 };
 
@@ -184,7 +186,6 @@ const getEventById = async (id: string, user: any): Promise<IEvent | null> => {
      }
      const adminEventLockPermissionRule = await RuleService.getPermissionFromDB(EPermissionType.IS_EXPIRED_EVENTS_AUTO_LOCK);
      if (adminEventLockPermissionRule && adminEventLockPermissionRule.permission) {
-          // await Event.findByIdAndUpdate(id, { isLocked: true });
           result.isLockedAfterExpiration = true;
           await result.save();
      }
@@ -199,13 +200,12 @@ const getEventById = async (id: string, user: any): Promise<IEvent | null> => {
 };
 
 const getEventByQr = async (eventId: string) => {
-     const result = await Event.findById(eventId).select('eventType image images eventLocation eventDateTime eventDescription isApproved isLocked');
+     const result = await Event.findById(eventId).select('eventType image images eventLocation eventDateTime eventDescription isApproved isLocked registrationCount');
      if (!result) {
           throw new AppError(StatusCodes.NOT_FOUND, 'Event not found.');
      }
      const adminEventLockPermissionRule = await RuleService.getPermissionFromDB(EPermissionType.IS_EXPIRED_EVENTS_AUTO_LOCK);
      if (adminEventLockPermissionRule && adminEventLockPermissionRule.permission) {
-          // await Event.findByIdAndUpdate(id, { isLockedAfterExpiration: true });
           result.isLockedAfterExpiration = true;
           await result.save();
      }
@@ -216,51 +216,35 @@ const getEventByQr = async (eventId: string) => {
      if (isEventPassed || result.isLockedAfterExpiration) {
           throw new AppError(StatusCodes.FORBIDDEN, 'Event is passed or locked');
      }
-     const registeredGuests = await HistoryTracker.find({ referenceId: new mongoose.Types.ObjectId(eventId), referenceModule: EReferenceModule.EVENT, recordType: ERecordType.EVENT_GUEST })
+
+     const guests = await EvenRegistration.find({ event: new mongoose.Types.ObjectId(eventId), isProfileVisibleToAttendees: true })
           .select('user')
-          .populate('user', 'name image');
-     (result as any).registeredGuestCount = registeredGuests.length;
+          .populate('user', 'name image')
+          .limit(6);
+
+     (result as any).guests = guests;
+
      return result;
 };
 
 const reportAgainstEventById = async (eventId: string, reportData: { reason: string }, user: { id: string } | any) => {
-     const result = await Event.findById(eventId).select('eventType image images eventLocation eventDateTime eventDescription isApproved isLocked');
+     const result = await Event.findById(eventId).select('eventType image images eventLocation eventDateTime eventDescription isApproved isLocked registrationCount');
      if (!result || (result && !result.isApproved)) {
           throw new AppError(StatusCodes.NOT_FOUND, 'Event not found.');
      }
-     // if user is guest to the event
-     const isGuest = await HistoryTracker.findOne({
-          referenceId: new mongoose.Types.ObjectId(eventId),
-          referenceModule: EReferenceModule.EVENT,
-          recordType: ERecordType.EVENT_GUEST,
-          userId: new mongoose.Types.ObjectId(user.id),
+     const isUserRegisteredEvent = await EvenRegistration.findOne({
+          event: new mongoose.Types.ObjectId(eventId),
+          user: new mongoose.Types.ObjectId(user.id),
      });
-     if (!isGuest) {
+     if (!isUserRegisteredEvent) {
           throw new AppError(StatusCodes.FORBIDDEN, 'You are not a guest to this event.');
      }
-     const isExistReport = await HistoryTracker.findOne({
-          referenceId: new mongoose.Types.ObjectId(eventId),
-          referenceModule: EReferenceModule.EVENT,
-          recordType: ERecordType.REPORT_EVENT,
-          userId: new mongoose.Types.ObjectId(user.id),
+
+     // update the reason
+     await EvenRegistration.findByIdAndUpdate(isUserRegisteredEvent._id, {
+          userReportAgainstEventRegistration: reportData.reason,
      });
-     let reportEvent;
-     if (isExistReport) {
-          // update the reason
-          await HistoryTracker.findByIdAndUpdate(isExistReport._id, {
-               description: reportData.reason,
-          });
-          return isExistReport;
-     } else {
-          reportEvent = await HistoryTracker.create({
-               referenceId: new mongoose.Types.ObjectId(eventId),
-               referenceModule: EReferenceModule.EVENT,
-               recordType: ERecordType.REPORT_EVENT,
-               userId: new mongoose.Types.ObjectId(user.id),
-               description: reportData.reason,
-          });
-     }
-     return reportEvent;
+     return isUserRegisteredEvent.userReportAgainstEventRegistration;
 };
 
 export const EventService = {

@@ -1,3 +1,5 @@
+import { Types } from 'mongoose';
+
 export interface IEvent {
      eventName: string;
      eventType: string; // conference, wedding
@@ -18,6 +20,9 @@ export interface IEvent {
      isApproved: boolean; // set by admin
      isLockedAfterExpiration: boolean; // set by admin
      eventAttendeeLimit: number;
+     registrationCount: number;
+     eventCode: number;
+     createdBy: Types.ObjectId;
      createdAt: Date;
      updatedAt: Date;
      isDeleted: boolean;

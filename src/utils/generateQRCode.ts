@@ -4,10 +4,13 @@ import fs from 'fs';
 import QRCode from 'qrcode';
 import config from '../config';
 
-const generateQRCode = async (eventId: string, fileName: string = 'eventQRImage') => {
+const generateQRCode = async (eventId: string, eventCode: string, fileName: string = 'eventQRImage') => {
      try {
           // qr route generation
-          const qrRoute = `${config.backend_url}/api/v1/events/qr-route/${eventId}`;
+          const qrData = `
+          route: ${config.backend_url}/api/v1/events/qr-route/${eventId}
+          code: ${eventCode}
+          `;
           // Ensure uploads/image directory exists
           const uploadsDir = path.join(process.cwd(), 'uploads', 'image');
           if (!fs.existsSync(uploadsDir)) {
@@ -20,7 +23,7 @@ const generateQRCode = async (eventId: string, fileName: string = 'eventQRImage'
           const relativePath = `/image/${path.basename(filePath)}`;
 
           // Generate and save the QR code as an image file
-          await QRCode.toFile(filePath, qrRoute, {
+          await QRCode.toFile(filePath, qrData, {
                type: 'png',
                errorCorrectionLevel: 'H',
                margin: 1,

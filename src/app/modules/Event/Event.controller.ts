@@ -4,7 +4,7 @@ import sendResponse from '../../../shared/sendResponse';
 import { EventService } from './Event.service';
 
 const createEvent = catchAsync(async (req: Request, res: Response) => {
-     const result = await EventService.createEvent(req.body);
+     const result = await EventService.createEvent(req.body, req.user as any);
 
      sendResponse(res, {
           statusCode: 200,

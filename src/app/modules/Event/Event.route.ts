@@ -13,7 +13,7 @@ const router = express.Router();
 
 router.post(
      '/',
-     auth(USER_ROLES.SUPER_ADMIN),
+     auth(USER_ROLES.ORGANIZER),
      fileUploadHandler(),
      parseFileData(FOLDER_NAMES.IMAGE),
      parseMultipleFileData(FOLDER_NAMES.IMAGES),
@@ -26,13 +26,13 @@ router.get('/', EventController.getAllEvents);
 
 router.get('/unpaginated', EventController.getAllUnpaginatedEvents);
 
-router.delete('/hard-delete/:id', auth(USER_ROLES.SUPER_ADMIN), EventController.hardDeleteEvent);
+router.delete('/hard-delete/:id', auth(USER_ROLES.ORGANIZER), EventController.hardDeleteEvent);
 router.get('/qr-route/:id', EventController.getEventByQr);
 router.post('/report/:id', auth(USER_ROLES.USER), validateRequest(EventValidation.reportAgainstEventById), EventController.reportAgainstEventById);
 
 router.patch(
      '/:id',
-     auth(USER_ROLES.SUPER_ADMIN),
+     auth(USER_ROLES.ORGANIZER),
      fileUploadHandler(),
      parseFileData(FOLDER_NAMES.IMAGE),
      parseMultipleFileData(FOLDER_NAMES.IMAGES),
@@ -40,7 +40,7 @@ router.patch(
      EventController.updateEvent,
 );
 
-router.delete('/:id', auth(USER_ROLES.SUPER_ADMIN), EventController.deleteEvent);
+router.delete('/:id', auth(USER_ROLES.ORGANIZER), EventController.deleteEvent);
 
 router.get('/:id', EventController.getEventById);
 

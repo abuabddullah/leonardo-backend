@@ -116,10 +116,28 @@ const contactFormTemplate = (values: IHelpContact) => {
      return data;
 };
 
+const eventRegistration = (values: { name: string; event: string; qrCode: string; email: string }) => {
+     const data = {
+          to: values.email,
+          subject: 'Event Registration Success',
+          html: `<body style="font-family: Arial, sans-serif; background-color: #f9f9f9; margin: 50px; padding: 20px; color: #555;">
+    <div style="width: 100%; max-width: 600px; margin: 0 auto; padding: 20px; background-color: #fff; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); text-align: center;">
+        <img src="https://i.postimg.cc/6pgNvKhD/logo.png" alt="Logo" style="display: block; margin: 0 auto 20px; width:150px" />
+          <h2 style="color: #277E16; font-size: 24px; margin-bottom: 20px;">Hey! ${values.name}, Your Account Credentials</h2>
+        <div style="text-align: center;">
+            <img src="${values.qrCode}" alt="Logo" style="display: block; margin: 0 auto 20px; width:150px" />
+        </div>
+    </div>
+</body>`,
+     };
+     return data;
+};
+
 export const emailTemplate = {
      createAccount,
      resetPassword,
      resetPasswordByUrl,
      contactFormTemplate,
      contact,
+     eventRegistration,
 };
