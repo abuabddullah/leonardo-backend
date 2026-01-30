@@ -9,15 +9,31 @@ import mongoose from 'mongoose';
 import { emailTemplate } from '../../../shared/emailTemplate';
 import { emailHelper } from '../../../helpers/emailHelper';
 import { User } from '../user/user.model';
+import { Subscription } from '../subscription/subscription.model';
+import { EEventStatus } from '../Event/Event.interface';
 
 const createEvenRegistration = async (payload: IEvenRegistration, user: { id: string; role: USER_ROLES }): Promise<IEvenRegistration> => {
      const isExistUser = await User.isExistUserById(user.id);
      if (!isExistUser) {
           throw new AppError(StatusCodes.BAD_REQUEST, "User doesn't exist!");
      }
-     const isExistEvent = await Event.findOne({ _id: new mongoose.Types.ObjectId(payload.event), isDeleted: false, isApproved: true, isVisibilityPublic: true, eventDateTime: { $gte: new Date() } });
+     const isExistEvent = await Event.findOne({
+          _id: new mongoose.Types.ObjectId(payload.event),
+          isDeleted: false,
+          registrationVacancyCount: { $gt: 0 },
+          eventStatus: EEventStatus.APPROVED,
+          eventDateTime: { $gte: new Date() },
+     });
      if (!isExistEvent) {
           throw new AppError(StatusCodes.NOT_FOUND, 'Event not found.');
+     }
+     const eventOrganizer = await User.findById(isExistEvent.createdBy);
+     if (!eventOrganizer) {
+          throw new AppError(StatusCodes.NOT_FOUND, 'Event organizer not found.');
+     }
+     const hasTheOrganizerValidSubscription = await Subscription.findOne({ user: eventOrganizer._id, isRefunded: false, expiresAt: { $gte: new Date() } });
+     if (!hasTheOrganizerValidSubscription) {
+          throw new AppError(StatusCodes.BAD_REQUEST, 'The organizer has no valid subscription for this event.');
      }
      const isAlreadyRegistered = await EvenRegistration.findOne({ event: new mongoose.Types.ObjectId(payload.event), user: new mongoose.Types.ObjectId(isExistUser.id) });
      if (isAlreadyRegistered) {
@@ -28,12 +44,12 @@ const createEvenRegistration = async (payload: IEvenRegistration, user: { id: st
 
      try {
           session.startTransaction();
-
+          payload.user = new mongoose.Types.ObjectId(payload.user);
           const result = await EvenRegistration.create([payload], { session });
 
           const createdRegistration = result[0];
 
-          await Event.findByIdAndUpdate(payload.event, { $inc: { registrationCount: 1 } }, { session });
+          await Event.findByIdAndUpdate(payload.event, { $inc: { registrationCount: 1, registrationVacancyCount: -1 } }, { session });
 
           if (!createdRegistration) {
                throw new AppError(StatusCodes.NOT_FOUND, 'EvenRegistration not found.');

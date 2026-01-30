@@ -15,7 +15,9 @@ const createUserToDB = async (payload: IUser): Promise<IUser> => {
      if (user) {
           throw new AppError(StatusCodes.CONFLICT, 'Email already exists');
      }
-     payload.role = USER_ROLES.USER;
+     if (!payload.role) {
+          payload.role = USER_ROLES.USER;
+     }
      const createUser = await User.create(payload);
      if (!createUser) {
           throw new AppError(StatusCodes.BAD_REQUEST, 'Failed to create user');

@@ -1,0 +1,10 @@
+Fri Jan 30 2026 16:12:7 [SERVER-NAME] error: 10.10.7.103 - POST /api/v1/events/registration/ 403 - 62.477 ms
+Fri Jan 30 2026 16:12:23 [SERVER-NAME] error: 10.10.7.103 - POST /api/v1/events/registration/ 400 - 53.724 ms
+Fri Jan 30 2026 16:13:49 [SERVER-NAME] error: 10.10.7.103 - POST /api/v1/events/registration/ 400 - 138.860 ms
+Fri Jan 30 2026 16:14:21 [SERVER-NAME] error: 10.10.7.103 - POST /api/v1/events/registration/ 404 - 146.949 ms
+Fri Jan 30 2026 16:14:45 [SERVER-NAME] error: 10.10.7.103 - POST /api/v1/events/registration/ 404 - 141.774 ms
+Fri Jan 30 2026 16:18:53 [SERVER-NAME] error: 10.10.7.103 - PATCH /api/v1/events/697b02708cc0631238069d39 403 - 62.163 ms
+Fri Jan 30 2026 16:19:9 [SERVER-NAME] error: 10.10.7.103 - PATCH /api/v1/events/697b02708cc0631238069d39 403 - 47.598 ms
+Fri Jan 30 2026 16:19:56 [SERVER-NAME] error: 10.10.7.103 - POST /api/v1/events/registration/ 403 - 48.632 ms
+Fri Jan 30 2026 16:20:11 [SERVER-NAME] error: 10.10.7.103 - POST /api/v1/events/registration/ 400 - 166.629 ms
+Fri Jan 30 2026 16:20:33 [SERVER-NAME] error: 10.10.7.103 - POST /api/v1/events/registration/ 400 - 336.265 ms

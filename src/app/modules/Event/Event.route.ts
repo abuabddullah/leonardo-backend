@@ -8,9 +8,10 @@ import validateRequest from '../../middleware/validateRequest';
 import { EventValidation } from './Event.validation';
 import { USER_ROLES } from '../../../enums/user';
 import parseMultipleFileData from '../../middleware/parseMultipleFiledata';
+import { EvenRegistrationRoutes } from '../EvenRegistration/EvenRegistration.route';
 
 const router = express.Router();
-
+router.use('/registration', EvenRegistrationRoutes);
 router.post(
      '/',
      auth(USER_ROLES.ORGANIZER),
@@ -21,8 +22,8 @@ router.post(
      EventController.createEvent,
 );
 
-router.get('/admin', EventController.getAllEventsForAdmin);
-router.get('/', EventController.getAllEvents);
+router.get('/admin', auth(USER_ROLES.SUPER_ADMIN), EventController.getAllEventsForAdmin);
+router.get('/', auth(USER_ROLES.USER), EventController.getAllEvents);
 
 router.get('/unpaginated', EventController.getAllUnpaginatedEvents);
 
@@ -33,7 +34,7 @@ router.post('/report/:id', auth(USER_ROLES.USER), validateRequest(EventValidatio
 
 router.patch(
      '/:id',
-     auth(USER_ROLES.ORGANIZER),
+     auth(USER_ROLES.ORGANIZER, USER_ROLES.SUPER_ADMIN),
      fileUploadHandler(),
      parseFileData(FOLDER_NAMES.IMAGE),
      parseMultipleFileData(FOLDER_NAMES.IMAGES),

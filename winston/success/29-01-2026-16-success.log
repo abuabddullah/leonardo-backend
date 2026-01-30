@@ -1,0 +1,20 @@
+Thu Jan 29 2026 16:53:27 [SERVER-NAME] info: [32mConfig validation successful.[39m
+Thu Jan 29 2026 16:53:28 [SERVER-NAME] info: [46m🚀 Database connected successfully[49m
+Thu Jan 29 2026 16:53:28 [SERVER-NAME] info: [33m♻️  Socket is listening on same port 7002[39m
+Thu Jan 29 2026 16:53:28 [SERVER-NAME] info: [46m♻️  Application listening on http://10.10.7.103:7002[49m
+Thu Jan 29 2026 16:54:55 [SERVER-NAME] info: [34mSIGTERM received. Shutting down gracefully...[39m
+Thu Jan 29 2026 16:54:56 [SERVER-NAME] info: [32mConfig validation successful.[39m
+Thu Jan 29 2026 16:54:57 [SERVER-NAME] info: [46m🚀 Database connected successfully[49m
+Thu Jan 29 2026 16:54:57 [SERVER-NAME] info: [33m♻️  Socket is listening on same port 7002[39m
+Thu Jan 29 2026 16:54:57 [SERVER-NAME] info: [46m♻️  Application listening on http://10.10.7.103:7002[49m
+Thu Jan 29 2026 16:56:44 [SERVER-NAME] info: [34mSIGTERM received. Shutting down gracefully...[39m
+Thu Jan 29 2026 16:56:45 [SERVER-NAME] info: [32mConfig validation successful.[39m
+Thu Jan 29 2026 16:56:46 [SERVER-NAME] info: [46m🚀 Database connected successfully[49m
+Thu Jan 29 2026 16:56:46 [SERVER-NAME] info: [33m♻️  Socket is listening on same port 7002[39m
+Thu Jan 29 2026 16:56:46 [SERVER-NAME] info: [46m♻️  Application listening on http://10.10.7.103:7002[49m
+Thu Jan 29 2026 16:56:52 [SERVER-NAME] info: [34mSIGTERM received. Shutting down gracefully...[39m
+Thu Jan 29 2026 16:56:53 [SERVER-NAME] info: [32mConfig validation successful.[39m
+Thu Jan 29 2026 16:56:53 [SERVER-NAME] info: [46m🚀 Database connected successfully[49m
+Thu Jan 29 2026 16:56:53 [SERVER-NAME] info: [33m♻️  Socket is listening on same port 7002[39m
+Thu Jan 29 2026 16:56:53 [SERVER-NAME] info: [46m♻️  Application listening on http://10.10.7.103:7002[49m
+Thu Jan 29 2026 16:59:3 [SERVER-NAME] info: [34mSIGTERM received. Shutting down gracefully...[39m

@@ -1,4 +1,4 @@
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import { USER_ROLES } from '../../../enums/user';
 export type IUser = {
      name: string;
@@ -18,6 +18,7 @@ export type IUser = {
           oneTimeCode: number;
           expireAt: Date;
      };
+     subscription?: Types.ObjectId;
      // for notifications
      isNewMatchNotificationEnabled: boolean;
      isNewStatusUploadNotificaitonEnabled: boolean;

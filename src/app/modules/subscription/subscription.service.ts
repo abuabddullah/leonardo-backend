@@ -7,7 +7,8 @@ import { AppleVerificationResult, GoogleVerificationResult } from '../../../type
 import { SubscriptionPlatform } from './subscription.constants';
 import { User } from '../user/user.model';
 import AppError from '../../../errors/AppError';
-import { Types } from 'mongoose';
+import mongoose, { Types } from 'mongoose';
+import { IJwtData } from '../../../types/auth';
 
 export const createSubscriptionIntoDB = async (payload: Partial<ISubscription> & { transactionReceipt?: string }) => {
      // check if the package is valid
@@ -127,7 +128,52 @@ const updateSubscriptionUsages = async (id: string | Types.ObjectId, mongooseTra
      }
 };
 
+// get subscription by id
+const getSubscriptionById = async (id: string | Types.ObjectId) => {
+     const subscription = await Subscription.findById(id);
+     if (!subscription) {
+          throw new AppError(StatusCodes.NOT_FOUND, 'Subscription not found');
+     }
+     return subscription;
+};
+
+// get subscription by id
+const refundSubscription = async (id: string | Types.ObjectId, user: IJwtData) => {
+     const userDetails = await User.findById(user.id);
+     if (!userDetails) {
+          throw new AppError(StatusCodes.NOT_FOUND, 'User not found');
+     }
+     const subscription = await Subscription.findOne({ _id: id, user: user.id });
+     if (!subscription) {
+          throw new AppError(StatusCodes.NOT_FOUND, 'Subscription not found');
+     }
+     if (userDetails.subscription?.toString() !== subscription._id.toString()) {
+          throw new AppError(StatusCodes.BAD_REQUEST, 'Subscription does not belong to this user');
+     }
+
+     const session = await mongoose.startSession();
+
+     try {
+          session.startTransaction();
+          subscription.isRefunded = true;
+          subscription.remainingAllowedRefundAmount = 0;
+          await subscription.save({ session });
+
+          await User.findByIdAndUpdate(user.id, { subscription: null }, { session });
+
+          await session.commitTransaction();
+          return subscription;
+     } catch (error) {
+          await session.abortTransaction();
+          throw error;
+     } finally {
+          session.endSession();
+     }
+};
+
 export const SubscriptionServices = {
      createSubscriptionIntoDB,
      updateSubscriptionUsages,
+     getSubscriptionById,
+     refundSubscription,
 };

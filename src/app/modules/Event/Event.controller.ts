@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import catchAsync from '../../../shared/catchAsync';
 import sendResponse from '../../../shared/sendResponse';
 import { EventService } from './Event.service';
+import { IJwtData } from '../../../types/auth';
 
 const createEvent = catchAsync(async (req: Request, res: Response) => {
      const result = await EventService.createEvent(req.body, req.user as any);
@@ -49,7 +50,7 @@ const getAllUnpaginatedEvents = catchAsync(async (req: Request, res: Response) =
 
 const updateEvent = catchAsync(async (req: Request, res: Response) => {
      const { id } = req.params;
-     const result = await EventService.updateEvent(id, req.body);
+     const result = await EventService.updateEvent(id, req.body, req.user as IJwtData);
 
      sendResponse(res, {
           statusCode: 200,

@@ -1,5 +1,5 @@
 import { Schema, model } from 'mongoose';
-import { IEvent } from './Event.interface';
+import { EEventStatus, IEvent } from './Event.interface';
 
 const EventSchema = new Schema<IEvent>(
      {
@@ -19,10 +19,11 @@ const EventSchema = new Schema<IEvent>(
           eventThemeColor: { type: String, required: true },
           eventFontColor: { type: String, required: true },
           isVisibilityPublic: { type: Boolean, required: true },
-          isApproved: { type: Boolean, required: true },
+          eventStatus: { type: String, enum: EEventStatus, default: EEventStatus.PENDING },
           isLockedAfterExpiration: { type: Boolean, required: true },
           eventAttendeeLimit: { type: Number, required: true },
           registrationCount: { type: Number, default: 0 },
+          registrationVacancyCount: { type: Number, required: true },
           eventCode: { type: Number, required: true },
           createdBy: { type: Schema.Types.ObjectId, ref: 'User', required: true },
           isDeleted: { type: Boolean, default: false },

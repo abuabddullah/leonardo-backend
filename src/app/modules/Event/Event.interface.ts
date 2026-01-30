@@ -1,5 +1,11 @@
 import { Types } from 'mongoose';
 
+export enum EEventStatus {
+     PENDING = 'PENDING',
+     APPROVED = 'APPROVED',
+     REJECTED = 'REJECTED',
+}
+
 export interface IEvent {
      eventName: string;
      eventType: string; // conference, wedding
@@ -17,10 +23,11 @@ export interface IEvent {
      eventThemeColor: string; // hex color
      eventFontColor: string; // hex color
      isVisibilityPublic: boolean; // default true
-     isApproved: boolean; // set by admin
+     eventStatus: EEventStatus;
      isLockedAfterExpiration: boolean; // set by admin
      eventAttendeeLimit: number;
      registrationCount: number;
+     registrationVacancyCount: number;
      eventCode: number;
      createdBy: Types.ObjectId;
      createdAt: Date;

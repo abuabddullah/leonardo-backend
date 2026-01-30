@@ -83,6 +83,10 @@ const userSchema = new Schema<IUser, UserModel>(
                },
                select: false,
           },
+          subscription: {
+               type: Schema.Types.ObjectId,
+               ref: 'Subscription',
+          },
           isNewMatchNotificationEnabled: {
                type: Boolean,
                default: false,

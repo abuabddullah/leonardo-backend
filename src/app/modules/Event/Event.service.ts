@@ -1,6 +1,6 @@
 import { StatusCodes } from 'http-status-codes';
 import AppError from '../../../errors/AppError';
-import { IEvent } from './Event.interface';
+import { EEventStatus, IEvent } from './Event.interface';
 import { Event } from './Event.model';
 import QueryBuilder from '../../builder/QueryBuilder';
 import unlinkFile from '../../../shared/unlinkFile';
@@ -12,39 +12,91 @@ import { generateQRCode } from '../../../utils/generateQRCode';
 import { EvenRegistration } from '../EvenRegistration/EvenRegistration.model';
 import generateOTP from '../../../utils/generateOTP';
 import { EvenRegistrationService } from '../EvenRegistration/EvenRegistration.service';
+import { User } from '../user/user.model';
+import { Subscription } from '../subscription/subscription.model';
+import { IJwtData } from '../../../types/auth';
 
 const createEvent = async (payload: IEvent, user: { id: string }): Promise<IEvent> => {
+     const userDetails = await User.findById(user.id);
+     if (!userDetails) {
+          throw new AppError(StatusCodes.NOT_FOUND, 'User not found.');
+     }
+     const userSubscription = await Subscription.findOne({ user: userDetails._id, expiresAt: { $gte: new Date() }, isRefunded: false, remainingEventCount: { $gt: 0 } });
+     if (!userSubscription) {
+          throw new AppError(StatusCodes.NOT_FOUND, 'User subscription not found.');
+     }
      let result;
+
+     const session = await mongoose.startSession();
+     session.startTransaction();
+
      try {
-          // make the eventDateTime from eventDate and eventTime
+          // 1. Update subscription usage
+          userSubscription.usedEventCount += 1;
+          userSubscription.remainingEventCount -= 1;
+          userSubscription.remainingAllowedRefundAmount -= userSubscription.pricePerEvent;
+
+          await userSubscription.save({ session });
+
+          // 2. Create eventDateTime
           payload.eventDateTime = new Date(`${payload.eventDate} ${payload.eventTime}`);
-          // validate its of future
+
           if (payload.eventDateTime < new Date()) {
                throw new AppError(StatusCodes.BAD_REQUEST, 'Event date and time must be in the future.');
           }
-          payload.createdBy = new mongoose.Types.ObjectId(user.id);
+
+          payload.createdBy = userDetails._id;
           payload.eventCode = generateOTP(4);
-          result = await Event.create(payload);
+          payload.registrationVacancyCount = payload.eventAttendeeLimit;
+
+          // get permission for auto approve
+          const isEventCreatePermission = await RuleService.getPermissionFromDB(EPermissionType.IS_AUTO_APPROVE_EVENTS);
+          if (isEventCreatePermission.permission) {
+               payload.eventStatus = EEventStatus.APPROVED;
+          }
+          // get permission for auto lock
+          const isEventLockPermission = await RuleService.getPermissionFromDB(EPermissionType.IS_EXPIRED_EVENTS_AUTO_LOCK);
+          if (isEventLockPermission.permission) {
+               payload.isLockedAfterExpiration = true;
+          }
+
+          // 3. Create Event
+          const createdEvents = await Event.create([payload], { session });
+          result = createdEvents[0]; // because create() with session returns array
+
           if (!result) {
                throw new AppError(StatusCodes.NOT_FOUND, 'Event not found.');
           }
-          // generate qr code
+
+          // 4. Generate QR Code
           const qrCode = await generateQRCode(result._id.toString(), result.eventCode.toString());
+
           result.eventQRImage = qrCode.qrImagePath;
-          await result.save();
+          await result.save({ session });
+
+          // 5. Commit transaction
+          await session.commitTransaction();
+          session.endSession();
+
           return result;
      } catch (error) {
+          // 🔥 Rollback DB changes
+          await session.abortTransaction();
+          session.endSession();
+
+          // 🧹 Cleanup uploaded files
           if (payload.image) {
                unlinkFile(payload.image);
           }
+
           if (result?.eventQRImage) {
-               unlinkFile(result?.eventQRImage);
+               unlinkFile(result.eventQRImage);
           }
-          if (payload.images && payload.images.length > 0) {
-               payload.images.forEach((image) => {
-                    unlinkFile(image);
-               });
+
+          if (payload.images?.length) {
+               payload.images.forEach(unlinkFile);
           }
+
           throw error;
      }
 };
@@ -62,7 +114,7 @@ const getAllEvents = async (
      meta: { total: number; page: number; limit: number };
      result: IEvent[];
 }> => {
-     const queryBuilder = new QueryBuilder(Event.find({ isDeleted: false, isApproved: true, isVisibilityPublic: true }), query);
+     const queryBuilder = new QueryBuilder(Event.find({ isDeleted: false, isVisibilityPublic: true, eventStatus: EEventStatus.APPROVED }), query);
 
      let result = await queryBuilder.filter().search(['eventName']).sort().paginate().fields().modelQuery;
 
@@ -96,15 +148,19 @@ const getAllEvents = async (
 };
 
 const getAllUnpaginatedEvents = async (): Promise<IEvent[]> => {
-     const result = await Event.find({ isDeleted: false, isApproved: true, isVisibilityPublic: true });
+     const result = await Event.find({ isDeleted: false, isVisibilityPublic: true, eventStatus: EEventStatus.APPROVED });
      return result;
 };
 
-const updateEvent = async (id: string, payload: Partial<IEvent>) => {
+const updateEvent = async (id: string, payload: Partial<IEvent>, user: IJwtData) => {
      try {
           const isExist = await Event.findById(id);
           if (!isExist) {
                throw new AppError(StatusCodes.NOT_FOUND, 'Event not found.');
+          }
+
+          if (payload.eventStatus && user.role !== USER_ROLES.SUPER_ADMIN) {
+               throw new AppError(StatusCodes.FORBIDDEN, 'You are not authorized to update  event status.');
           }
 
           if (payload.eventDate || payload.eventTime) {
@@ -131,6 +187,18 @@ const updateEvent = async (id: string, payload: Partial<IEvent>) => {
                isExist.images.forEach((image) => {
                     unlinkFile(image);
                });
+          }
+
+          if (payload.eventCode) {
+               // 4. Generate QR Code
+               const qrCode = await generateQRCode(isExist._id.toString(), payload.eventCode.toString());
+
+               payload.eventQRImage = qrCode.qrImagePath;
+
+               // unlink old qr image
+               if (qrCode && qrCode.qrImagePath && isExist.eventQRImage) {
+                    unlinkFile(isExist.eventQRImage);
+               }
           }
 
           return await Event.findByIdAndUpdate(id, payload, { new: true });
@@ -194,7 +262,7 @@ const getEventById = async (id: string, user: any): Promise<IEvent | null> => {
      const presentTime = new Date();
      const isEventPassed = result.eventDateTime && new Date(result.eventDateTime) < presentTime;
 
-     if (user.role !== USER_ROLES.SUPER_ADMIN && isEventPassed && result.isLockedAfterExpiration) {
+     if (user?.role !== USER_ROLES.SUPER_ADMIN && isEventPassed && result.isLockedAfterExpiration) {
           throw new AppError(StatusCodes.FORBIDDEN, 'Event is locked');
      }
      return result;
@@ -214,7 +282,7 @@ const getEventGuests = async (id: string, query: Record<string, any>) => {
 };
 
 const getEventByQr = async (eventId: string) => {
-     const result = await Event.findById(eventId).select('eventType image images eventLocation eventDateTime eventDescription isApproved isLocked registrationCount');
+     const result = await Event.findById(eventId).select('eventType image images eventLocation eventDateTime eventDescription eventStatus isLocked registrationCount');
      if (!result) {
           throw new AppError(StatusCodes.NOT_FOUND, 'Event not found.');
      }
@@ -242,8 +310,8 @@ const getEventByQr = async (eventId: string) => {
 };
 
 const reportAgainstEventById = async (eventId: string, reportData: { reason: string }, user: { id: string } | any) => {
-     const result = await Event.findById(eventId).select('eventType image images eventLocation eventDateTime eventDescription isApproved isLocked registrationCount');
-     if (!result || (result && !result.isApproved)) {
+     const result = await Event.findById(eventId).select('eventType image images eventLocation eventDateTime eventDescription eventStatus isLocked registrationCount');
+     if (!result || (result && result.eventStatus !== EEventStatus.APPROVED)) {
           throw new AppError(StatusCodes.NOT_FOUND, 'Event not found.');
      }
      const isUserRegisteredEvent = await EvenRegistration.findOne({

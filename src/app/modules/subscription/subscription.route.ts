@@ -8,6 +8,12 @@ import { USER_ROLES } from '../../../enums/user';
 const router = express.Router();
 
 // create subscription
-router.post('/create', auth(USER_ROLES.USER), validateRequest(SubscriptionValidations.createSubscriptionSchema), SubscriptionController.createSubscription);
+router.post('/create', auth(USER_ROLES.ORGANIZER), validateRequest(SubscriptionValidations.createSubscriptionSchema), SubscriptionController.createSubscription);
+
+// refund subscription
+router.post('/refund/:id', auth(USER_ROLES.ORGANIZER), SubscriptionController.refundSubscription);
+
+// get subs by id
+router.get('/:id', auth(USER_ROLES.ORGANIZER), SubscriptionController.getSubscriptionById);
 
 export const subscriptionRoutes = router;

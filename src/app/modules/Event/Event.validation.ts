@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { EEventStatus } from './Event.interface';
 
 const createEventZodSchema = z.object({
      body: z.object({
@@ -16,7 +17,7 @@ const createEventZodSchema = z.object({
           eventThemeColor: z.string(),
           eventFontColor: z.string(),
           isVisibilityPublic: z.boolean(),
-          isApproved: z.boolean(),
+          eventStatus: z.nativeEnum(EEventStatus).optional(),
           isLockedAfterExpiration: z.boolean(),
           eventAttendeeLimit: z.number(),
      }),
@@ -39,7 +40,7 @@ const updateEventZodSchema = z.object({
           eventThemeColor: z.string().optional(),
           eventFontColor: z.string().optional(),
           isVisibilityPublic: z.boolean().optional(),
-          isApproved: z.boolean().optional(),
+          eventStatus: z.nativeEnum(EEventStatus).optional(),
           isLockedAfterExpiration: z.boolean().optional(),
           eventAttendeeLimit: z.number().optional(),
      }),
